@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="Masoura">AlMansoura</string>
+    <string name="Manage_cities">Manage Cities</string>
+    <string name="Add_city">Add City</string>
+    <string name="Weather_widget">Weather Widget</string>
 </resources>
