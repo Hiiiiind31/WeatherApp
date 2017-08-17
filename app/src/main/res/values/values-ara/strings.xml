@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Masoura">المنصورة</string>
+    <string name="Manage_cities">ضبط المدن</string>
+    <string name="Add_city">إضافة مدينة</string>
+    <string name="Weather_widget">عرض</string>
+    <string name="Settings"> الإعدادات</string>
+    <string name="Temperature"> وحدات درجة الحرارة</string>
+    <string name="language">اللغة</string>
+    <string name="auto">Auto (ْ F)</string>
+    <string name="C">ْسيليزيوس</string>
+    <string name="F">ْ فيهرنهيت</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="Arabic">عربي</string>
+    <string name="English">إنجليزي</string>
+
+</resources>

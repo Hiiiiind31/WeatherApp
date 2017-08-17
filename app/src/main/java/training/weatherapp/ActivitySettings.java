@@ -1,32 +1,39 @@
 package training.weatherapp;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 
 public class ActivitySettings extends AppCompatActivity {
 
-     RadioGroup T_radioGroup , L_radioGroup;
-     RadioButton Rd_auto, Rd_F, Rd_C, Rd_Eng, Rd_Ara;
-     Button Cancel, Ok;
-     Dialog T_dialog, L_dialog;
-    TextView Temp_txt_sett ,Lang_txt_sett ;
+    RadioGroup T_radioGroup, L_radioGroup;
+    RadioButton Rd_auto, Rd_F, Rd_C, Rd_Eng, Rd_Ara;
+    Button Cancel, Ok;
+    Dialog T_dialog, L_dialog;
+    TextView Temp_txt_sett, Lang_txt_sett;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
 
-         Temp_txt_sett = (TextView) findViewById(R.id.temp_txtview_sett);
-         Lang_txt_sett = (TextView) findViewById(R.id.lan_txtview_sett);
+        Temp_txt_sett = (TextView) findViewById(R.id.temp_txtview_sett);
+        Lang_txt_sett = (TextView) findViewById(R.id.lan_txtview_sett);
 
         // Temp custom dialog
         T_dialog = new Dialog(this, R.style.FullHeightDialog);
@@ -53,16 +60,15 @@ public class ActivitySettings extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 if (checkedId == R.id.rd_auto) {
-                     Temp_txt_sett.setText("Auto(ْ F)");
+                    Temp_txt_sett.setText("Auto(ْ F)");
                     T_dialog.dismiss();
                 } else if (checkedId == R.id.rd_c) {
                     Temp_txt_sett.setText("ْ c");
                     T_dialog.dismiss();
 
-                } else if(checkedId == R.id.rd_f) {
+                } else if (checkedId == R.id.rd_f) {
                     Temp_txt_sett.setText("ْ F");
                     T_dialog.dismiss();
-
 
 
                 }
@@ -94,12 +100,13 @@ public class ActivitySettings extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 if (checkedId == R.id.rd_eng) {
+                    setLocal("en");
                     Lang_txt_sett.setText("English");
                     L_dialog.dismiss();
 
                 } else if (checkedId == R.id.rd_ara) {
+                    setLocal("ara");
                     Lang_txt_sett.setText("Arabic");
-
                     L_dialog.dismiss();
 
 
@@ -108,8 +115,55 @@ public class ActivitySettings extends AppCompatActivity {
 
         });
 
-
     }
+
+    private void setLocal(String language) {
+
+        Locale myLocale = new Locale(language);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        conf.setLayoutDirection(myLocale);
+        res.updateConfiguration(conf, dm);
+        Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+        finish();
+    }
+
+//    public void changeLang(String lang) {
+//        if (lang.equalsIgnoreCase(""))
+//            return;
+//        Locale myLocale = new Locale(lang);
+//        saveLocale(lang);
+//        Locale.setDefault(myLocale);
+//        android.content.res.Configuration config = new android.content.res.Configuration();
+//        config.locale = myLocale;
+//        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//    }
+//
+//
+//    // get current language
+//    public void loadLocale() {
+//        String langPref = "Language";
+//        SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+//        String language = prefs.getString(langPref, "ara");
+//        changeLang(language);
+//    }
+//
+//    // save changed language
+//    private void saveLocale(String lang) {
+//        {
+//            String langPref = "Language";
+//            SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = prefs.edit();
+//            editor.putString(langPref, lang);
+//            editor.commit();
+//        }
+//
+//
+//    }
+//
 
     public void temp_units(View v) {
         T_dialog.show();
