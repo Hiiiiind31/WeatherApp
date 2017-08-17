@@ -5,4 +5,14 @@
     <string name="Add_city">Add City</string>
     <string name="Weather_widget">Weather Widget</string>
     <string name="Settings"> Settings</string>
+    <string name="Temperature"> Temperature Units</string>
+    <string name="language">Language</string>
+    <string name="auto">Auto (ْ F)</string>
+    <string name="C">ْ c</string>
+    <string name="F">ْ F</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="Arabic">Arabic</string>
+    <string name="English">English</string>
+
 </resources>

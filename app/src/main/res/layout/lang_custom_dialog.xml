@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_border">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/language"
+        android:padding="16dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/darker_gray" />
+    <RadioGroup
+        android:id="@+id/Lang_RadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/rd_eng">
+
+        <RadioButton
+            android:id="@+id/rd_eng"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:text="@string/English"
+            android:textColor="@android:color/black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/darker_gray" />
+
+        <RadioButton
+            android:id="@+id/rd_ara"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Arabic"
+            android:textColor="@android:color/black"/>
+
+    </RadioGroup>
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/button_border"
+        android:text="@string/ok"
+        android:textColor="@android:color/holo_blue_dark"
+        />
+</LinearLayout>

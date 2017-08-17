@@ -62,6 +62,7 @@
                 android:text="@string/Add_city"
                 android:layout_gravity="center_horizontal"
                 android:textSize="12sp"
+                android:textColor="@android:color/white"
                 android:paddingBottom="5dp" />
         </LinearLayout>
         <LinearLayout
@@ -81,6 +82,7 @@
                 android:text="@string/Weather_widget"
                 android:layout_gravity="center_horizontal"
                 android:textSize="12sp"
+                android:textColor="@android:color/white"
                 android:paddingBottom="5dp" />
         </LinearLayout>
 
