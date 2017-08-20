@@ -1,4 +1,4 @@
-package training.weatherapp;
+package training.weatherapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +18,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import training.weatherapp.RecycleListViewHours.H_Adapter;
-import training.weatherapp.RecycleListViewHours.Temp_Model_hours;
-import training.weatherapp.RecyleListViewDays.D_Adapter;
-import training.weatherapp.RecyleListViewDays.Temp_model_days;
+import training.weatherapp.R;
+import training.weatherapp.RecycleLists.Adapters.D_Adapter;
+import training.weatherapp.RecycleLists.Adapters.H_Adapter;
+import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
+import training.weatherapp.RecycleLists.Models.Temp_model_days;
 
 public class ActivityMain extends AppCompatActivity {
 

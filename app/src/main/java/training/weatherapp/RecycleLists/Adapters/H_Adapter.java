@@ -1,4 +1,4 @@
-package training.weatherapp.RecycleListViewHours;
+package training.weatherapp.RecycleLists.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import training.weatherapp.R;
+import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
 
 
 /**

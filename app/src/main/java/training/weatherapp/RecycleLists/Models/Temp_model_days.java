@@ -1,4 +1,4 @@
-package training.weatherapp.RecyleListViewDays;
+package training.weatherapp.RecycleLists.Models;
 
 /**
  * Created by hindahmed on 16/08/17.

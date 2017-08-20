@@ -1,4 +1,4 @@
-package training.weatherapp;
+package training.weatherapp.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.Locale;
+
+import training.weatherapp.Activities.ActivityMain;
+import training.weatherapp.R;
 
 
 public class ActivitySettings extends AppCompatActivity {

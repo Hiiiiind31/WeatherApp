@@ -8,15 +8,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".ActivityMain">
+        <activity android:name=".Activities.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivitySettings" />
-        <activity android:name=".ActivityCities"></activity>
+        <activity android:name=".Activities.ActivitySettings" />
+        <activity android:name=".Activities.ActivityCities"></activity>
     </application>
 
 </manifest>
