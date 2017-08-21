@@ -19,6 +19,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@android:color/white"
             android:src="@drawable/ic_arrow_back_black_24dp"
             />
         <TextView
@@ -53,6 +54,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tint="@android:color/white"
                 android:src="@drawable/ic_add_black_24dp"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="5dp" />
@@ -73,6 +75,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tint="@android:color/white"
                 android:src="@drawable/ic_widget_black_24dp"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="5dp" />

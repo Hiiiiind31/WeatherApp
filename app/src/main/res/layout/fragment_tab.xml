@@ -20,9 +20,10 @@
 
             <ImageView
                 android:id="@+id/Cities_img"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:tint="@android:color/white"
                 android:src="@drawable/ic_business_black_24dp"
 
                 />
@@ -38,9 +39,10 @@
 
             <ImageView
                 android:id="@+id/Settings_img"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:tint="@android:color/white"
                 android:src="@drawable/ic_settings_black_24dp" />
         </LinearLayout>
 

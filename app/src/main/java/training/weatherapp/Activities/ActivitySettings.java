@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import training.weatherapp.Activities.ActivityMain;
 import training.weatherapp.R;
 
 
@@ -98,24 +98,22 @@ public class ActivitySettings extends AppCompatActivity {
 
         L_radioGroup = L_dialog.findViewById(R.id.Lang_RadioGroup);
 
-        L_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        Rd_Eng.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                if (checkedId == R.id.rd_eng) {
-                    setLocal("en");
-                    Lang_txt_sett.setText("English");
-                    L_dialog.dismiss();
-
-                } else if (checkedId == R.id.rd_ara) {
-                    setLocal("ara");
-                    Lang_txt_sett.setText("Arabic");
-                    L_dialog.dismiss();
-
-
-                }
+            public void onClick(View view) {
+                setLocal("en");
+                Lang_txt_sett.setText("English");
+                L_dialog.dismiss();
             }
+        });
+        Rd_Ara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLocal("ara");
+                Lang_txt_sett.setText("Arabic");
+                L_dialog.dismiss();
 
+            }
         });
 
     }
@@ -134,6 +132,19 @@ public class ActivitySettings extends AppCompatActivity {
         finish();
     }
 
+    public static boolean isRTL (View view)
+    {
+        if(view == null)
+            return false;
+
+        // config.getLayoutDirection() only available since 4.2
+        // -> using ViewCompat instead (from Android support library)
+        if (ViewCompat.LAYOUT_DIRECTION_LTR == ViewCompat.getLayoutDirection(view))
+        {
+            return true;
+        }
+        return false;
+    }
 //    public void changeLang(String lang) {
 //        if (lang.equalsIgnoreCase(""))
 //            return;

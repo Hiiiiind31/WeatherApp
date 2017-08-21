@@ -11,4 +11,10 @@
     <style name="FullHeightDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
     </style>
+
+
+    <style name="textview">
+      <item name="android:textAlignment"> textStart</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>
