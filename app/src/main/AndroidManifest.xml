@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ActivitySettings" />
-        <activity android:name=".Activities.ActivityCities"></activity>
+        <activity android:name=".Activities.ActivityCities" />
+        <activity android:name=".Activities.ActivityWeatherWidget"></activity>
     </application>
 
 </manifest>

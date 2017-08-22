@@ -1,5 +1,6 @@
 package training.weatherapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,10 @@ public class ActivityCities extends AppCompatActivity {
         this.setContentView(R.layout.add_cities_layout);
     }
 
+    public void open_widget(View v){
+        Intent i = new Intent(ActivityCities.this,ActivityWeatherWidget.class);
+        startActivity(i);
+    }
     public void back_img_click(View v) {
         this.setContentView(R.layout.activity_cities);
     }

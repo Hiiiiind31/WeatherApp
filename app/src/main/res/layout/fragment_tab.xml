@@ -35,7 +35,8 @@
                 android:layout_weight="3"
                 android:gravity="center_horizontal"
                 android:text="@string/Masoura"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@android:color/white" />
 
             <ImageView
                 android:id="@+id/Settings_img"
@@ -50,13 +51,13 @@
 
     <ScrollView
         android:layout_below="@+id/toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
             <LinearLayout
                 android:id="@+id/Main_linear_temp"
@@ -71,22 +72,25 @@
                     android:id="@+id/Temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="28"
-                    android:textSize="100sp" />
+                    android:text="28ْ "
+                    android:textSize="100sp"
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     android:id="@+id/weather_in_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mostly sunny"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     android:id="@+id/Temp_min_max"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="37 / 22"
-                    android:textSize="25sp" />
+                    android:text="37ْ / 22ْ "
+                    android:textSize="25sp"
+                    android:textColor="@android:color/white" />
 
 
             </LinearLayout>
@@ -97,7 +101,8 @@
                 android:layout_marginTop="10dp"
                 android:textSize="10sp"
                 android:layout_below="@+id/Main_linear_temp"
-                android:text="Updated 30 minutes ago"/>
+                android:text="Updated 30 minutes ago"
+                android:textColor="@android:color/white" />
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
@@ -111,7 +116,6 @@
                 android:id="@+id/Recycle_ViewList_hours"
                 android:scrollbars="vertical"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view">
