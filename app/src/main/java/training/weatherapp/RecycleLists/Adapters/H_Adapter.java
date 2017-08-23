@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
+import training.weatherapp.RoomDatabase.Models.Weather_days_model;
+import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 
 
 /**
@@ -19,10 +23,10 @@ import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
 public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
 
     private Context context;
-    private List<Temp_Model_hours> m_items;
+    private List<Weather_hours_model> m_items;
 
 
-    public H_Adapter(Context context, List<Temp_Model_hours> m_items) {
+    public H_Adapter(Context context, List<Weather_hours_model> m_items) {
         this.context = context;
         this.m_items = m_items;
     }
@@ -35,7 +39,7 @@ public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tx_hour.setText(m_items.get(position).getTime());
+        holder.tx_hour.setText(m_items.get(position).getDate());
         holder.tx_temp.setText(m_items.get(position).getTemp());
 
 

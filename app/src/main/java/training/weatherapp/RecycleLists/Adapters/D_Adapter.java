@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Models.Temp_model_days;
+import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 
 /**
  * Created by hindahmed on 16/08/17.
@@ -21,10 +23,10 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
 
 
     private Context context;
-    private List<Temp_model_days> m_items;
+    private List<Weather_days_model> m_items;
 
 
-    public D_Adapter(Context context, List<Temp_model_days> m_items) {
+    public D_Adapter(Context context, ArrayList<Weather_days_model> m_items) {
         this.context = context;
         this.m_items = m_items;
     }
@@ -37,8 +39,8 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(D_Adapter.ViewHolder holder, int position) {
-        holder.tx_time.setText(m_items.get(position).getD_Date());
-        holder.tx_temp_mm.setText(m_items.get(position).getD_Max_Temp()+"/"+m_items.get(position).getD_Min_Temp());
+        holder.tx_time.setText(m_items.get(position).getDate());
+        holder.tx_temp_mm.setText(m_items.get(position).getMax_temp()+"/"+m_items.get(position).getMin_temp());
 
     }
 

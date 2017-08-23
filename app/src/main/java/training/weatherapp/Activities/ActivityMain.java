@@ -1,5 +1,6 @@
 package training.weatherapp.Activities;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,9 @@ import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.Adapters.H_Adapter;
 import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
 import training.weatherapp.RecycleLists.Models.Temp_model_days;
+import training.weatherapp.RoomDatabase.AppDatabase;
+import training.weatherapp.RoomDatabase.Models.Weather_days_model;
+import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -42,8 +47,12 @@ public class ActivityMain extends AppCompatActivity {
     private ViewPager mViewPager;
     static View rootView;
 
-    static ArrayList<Temp_Model_hours> Simple_temp_list;
-    static ArrayList<Temp_model_days> Simple_temp_list2;
+    static ArrayList<Weather_days_model> Days_temp_list;
+    static ArrayList<Weather_hours_model> Hours_temp_list;
+
+    Weather_days_model W_Days ;
+    Weather_hours_model w_Hours;
+    static AppDatabase db ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,31 +72,62 @@ public class ActivityMain extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
+        /////////////////
+
+         db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database-name").allowMainThreadQueries().build();
+
+
         ////////////
 
-        // data to populate the RecyclerView with
-        Simple_temp_list = new ArrayList<>();
-        Simple_temp_list.add(0, new Temp_Model_hours("10 PM", "", "28"));
-        Simple_temp_list.add(1, new Temp_Model_hours("11 PM", "", "27"));
-        Simple_temp_list.add(2, new Temp_Model_hours("12 PM", "", "28"));
-        Simple_temp_list.add(3, new Temp_Model_hours("1 AM", "", "28"));
-        Simple_temp_list.add(4, new Temp_Model_hours("2 AM", "", "28"));
-        Simple_temp_list.add(5, new Temp_Model_hours("3 AM", "", "28"));
-        Simple_temp_list.add(6, new Temp_Model_hours("4 AM", "", "28"));
-        Simple_temp_list.add(7, new Temp_Model_hours("5 AM", "", "27"));
-        Simple_temp_list.add(8, new Temp_Model_hours("6 AM", "", "28"));
-        Simple_temp_list.add(9, new Temp_Model_hours("7 AM", "", "28"));
-        Simple_temp_list.add(10, new Temp_Model_hours("8 AM", "", "28"));
-        Simple_temp_list.add(11, new Temp_Model_hours("9 AM", "", "28"));
+//        // data to populate the RecyclerView with
+//        Simple_temp_list = new ArrayList<>();
+//        Simple_temp_list.add(0, new Temp_Model_hours("10 PM", "", "28"));
+//        Simple_temp_list.add(1, new Temp_Model_hours("11 PM", "", "27"));
+//        Simple_temp_list.add(2, new Temp_Model_hours("12 PM", "", "28"));
+//        Simple_temp_list.add(3, new Temp_Model_hours("1 AM", "", "28"));
+//        Simple_temp_list.add(4, new Temp_Model_hours("2 AM", "", "28"));
+//        Simple_temp_list.add(5, new Temp_Model_hours("3 AM", "", "28"));
+//        Simple_temp_list.add(6, new Temp_Model_hours("4 AM", "", "28"));
+//        Simple_temp_list.add(7, new Temp_Model_hours("5 AM", "", "27"));
+//        Simple_temp_list.add(8, new Temp_Model_hours("6 AM", "", "28"));
+//        Simple_temp_list.add(9, new Temp_Model_hours("7 AM", "", "28"));
+//        Simple_temp_list.add(10, new Temp_Model_hours("8 AM", "", "28"));
+//        Simple_temp_list.add(11, new Temp_Model_hours("9 AM", "", "28"));
 
 
         // data to populate the RecyclerView with
 
-        Simple_temp_list2 = new ArrayList<>();
-        Simple_temp_list2.add(new Temp_model_days("Tomorrow,9Aug", "", "25", "16"));
-        Simple_temp_list2.add(new Temp_model_days("Fri,10Aug", "", "25", "16"));
-        Simple_temp_list2.add(new Temp_model_days("Sat,11Aug", "", "25", "16"));
-        Simple_temp_list2.add(new Temp_model_days("Sun,12Aug", "", "25", "16"));
+//        Simple_temp_list2 = new ArrayList<>();
+//        Simple_temp_list2.add(new Temp_model_days("Tomorrow,9Aug", "", "25", "16"));
+//        Simple_temp_list2.add(new Temp_model_days("Fri,10Aug", "", "25", "16"));
+//        Simple_temp_list2.add(new Temp_model_days("Sat,11Aug", "", "25", "16"));
+//        Simple_temp_list2.add(new Temp_model_days("Sun,12Aug", "", "25", "16"));
+
+        Days_temp_list =new ArrayList<>();
+
+        W_Days = new Weather_days_model();
+        W_Days.setUid(0);
+        W_Days.setDate("1-9-2017");
+        W_Days.setIcon("");
+        W_Days.setIconPhrase("cloud");
+        W_Days.setMax_temp("25");
+        W_Days.setMin_temp("20");
+        db.WDays_Dao().insertAll(W_Days);
+        Days_temp_list.add(db.WDays_Dao().getAll().get(0));
+
+        ///////////////////////////////////////////////////////////
+
+        Hours_temp_list = new ArrayList<>();
+        w_Hours = new Weather_hours_model();
+        w_Hours.setUid(0);
+        w_Hours.setDate("2-9-2017");
+        w_Hours.setIcon("");
+        w_Hours.setIconPhrase("Sunny");
+        w_Hours.setTemp("27");
+        db.WHours_Doa().insertAll(w_Hours);
+        Hours_temp_list.add(db.WHours_Doa().getAll().get(0));
+
 
 
     }
@@ -139,14 +179,15 @@ public class ActivityMain extends AppCompatActivity {
             // set up the  Hours RecyclerListView
             RecyclerView recyclerView = rootView.findViewById(R.id.Recycle_ViewList_hours);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            H_Adapter H_adapter = new H_Adapter(getActivity(), Simple_temp_list);
+            H_Adapter H_adapter = new H_Adapter(getActivity(),Hours_temp_list);
             recyclerView.setAdapter(H_adapter);
-            ////////////
+
+//            ////////////
 
             // set up the Days RecyclerListView
             RecyclerView recyclerView2 = rootView.findViewById(R.id.Recycle_ViewList_days);
             recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-            D_Adapter D_adapter = new D_Adapter(getActivity(), Simple_temp_list2);
+            D_Adapter D_adapter = new D_Adapter(getActivity(),Days_temp_list);
             recyclerView2.setAdapter(D_adapter);
 
         }
