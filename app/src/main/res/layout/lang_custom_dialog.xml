@@ -46,16 +46,16 @@
             android:textColor="@android:color/black"/>
 
     </RadioGroup>
+
     <Button
         android:id="@+id/ok"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/button_border"
         android:text="@string/ok"
-        android:textColor="@android:color/holo_blue_dark"
-        />
+        android:textColor="@android:color/holo_blue_dark" />
 </LinearLayout>

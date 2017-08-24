@@ -60,16 +60,17 @@
             android:text="@string/F"
             android:textColor="@android:color/black"/>
     </RadioGroup>
+
     <Button
         android:id="@+id/cancel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/button_border"
+        android:paddingBottom="5dp"
         android:text="@string/cancel"
-        android:textColor="@android:color/holo_blue_dark"
-        />
+        android:textColor="@android:color/holo_blue_dark" />
 </LinearLayout>

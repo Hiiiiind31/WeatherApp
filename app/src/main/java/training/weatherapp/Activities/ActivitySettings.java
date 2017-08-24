@@ -20,6 +20,8 @@ import java.util.Locale;
 
 import training.weatherapp.R;
 
+import static training.weatherapp.Activities.ActivityMain.db;
+
 
 public class ActivitySettings extends AppCompatActivity {
 
@@ -101,7 +103,7 @@ public class ActivitySettings extends AppCompatActivity {
         Rd_Eng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocal("en");
+                //setLocal("en");
                 Lang_txt_sett.setText("English");
                 L_dialog.dismiss();
             }
@@ -109,7 +111,7 @@ public class ActivitySettings extends AppCompatActivity {
         Rd_Ara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocal("ara");
+               // setLocal("ara");
                 Lang_txt_sett.setText("Arabic");
                 L_dialog.dismiss();
 
@@ -118,33 +120,31 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
-    private void setLocal(String language) {
+//    private void setLocal(String language) {
+//
+//        Locale myLocale = new Locale(language);
+//        Resources res = getResources();
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        Configuration conf = res.getConfiguration();
+//        conf.locale = myLocale;
+//        conf.setLayoutDirection(myLocale);
+//        res.updateConfiguration(conf, dm);
+//        Intent intent = new Intent(this, ActivityMain.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
-        Locale myLocale = new Locale(language);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        conf.setLayoutDirection(myLocale);
-        res.updateConfiguration(conf, dm);
-        Intent intent = new Intent(this, ActivityMain.class);
-        startActivity(intent);
-        finish();
-    }
-
-    public static boolean isRTL (View view)
-    {
-        if(view == null)
-            return false;
-
-        // config.getLayoutDirection() only available since 4.2
-        // -> using ViewCompat instead (from Android support library)
-        if (ViewCompat.LAYOUT_DIRECTION_LTR == ViewCompat.getLayoutDirection(view))
-        {
-            return true;
-        }
-        return false;
-    }
+//    public static boolean isRTL(View view) {
+//        if (view == null)
+//            return false;
+//
+//        // config.getLayoutDirection() only available since 4.2
+//        // -> using ViewCompat instead (from Android support library)
+//        if (ViewCompat.LAYOUT_DIRECTION_LTR == ViewCompat.getLayoutDirection(view)) {
+//            return true;
+//        }
+//        return false;
+//    }
 //    public void changeLang(String lang) {
 //        if (lang.equalsIgnoreCase(""))
 //            return;
@@ -191,4 +191,11 @@ public class ActivitySettings extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
+    public void back_img_click(View v) {
+        Intent i = new Intent(ActivitySettings.this, ActivityMain.class);
+        startActivity(i);
+    }
 }
+

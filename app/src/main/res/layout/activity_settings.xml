@@ -16,17 +16,20 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:onClick="back_img_click"
+            android:src="@drawable/ic_arrow_back_black_24dp"
             android:tint="@android:color/white"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            android:id="@+id/imageView" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:text="@string/Settings"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_alignBottom="@+id/imageView" />
     </android.support.v7.widget.Toolbar>
 
     <View

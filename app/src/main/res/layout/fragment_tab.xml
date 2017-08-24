@@ -20,11 +20,11 @@
 
             <ImageView
                 android:id="@+id/Cities_img"
-                android:layout_width="35dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:tint="@android:color/white"
                 android:src="@drawable/ic_business_black_24dp"
+                android:tint="@android:color/white"
 
                 />
 
@@ -41,11 +41,11 @@
 
             <ImageView
                 android:id="@+id/Settings_img"
-                android:layout_width="35dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:tint="@android:color/white"
-                android:src="@drawable/ic_settings_black_24dp" />
+                android:src="@drawable/ic_settings_black_24dp"
+                android:tint="@android:color/white" />
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

@@ -32,6 +32,11 @@ public class ActivityCities extends AppCompatActivity {
         this.setContentView(R.layout.activity_cities);
     }
 
+    public void back_img_click2(View v) {
+        Intent i = new Intent(ActivityCities.this,ActivityMain.class);
+        startActivity(i);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
