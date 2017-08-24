@@ -17,20 +17,31 @@ public class Weather_days_model {
     private int uid;
 
     @ColumnInfo(name = "date")
-    private String Date ;
+    private String Date;
 
     @ColumnInfo(name = "max_temp")
-    private String Max_temp ;
+    private String Max_temp;
 
     @ColumnInfo(name = "min_temp")
-    private String Min_temp ;
+    private String Min_temp;
 
     @ColumnInfo(name = "icon")
-    private String Icon ;
+    private String Icon;
 
     @ColumnInfo(name = "icon_phrase")
     private String IconPhrase;
 
+
+    public Weather_days_model() {
+    }
+
+    public Weather_days_model(String date, String max_temp, String min_temp, String icon, String iconPhrase) {
+        this.Date = date;
+        this.Max_temp = max_temp;
+        this.Min_temp = min_temp;
+        this.Icon = icon;
+        this.IconPhrase = iconPhrase;
+    }
 
     public int getUid() {
         return uid;

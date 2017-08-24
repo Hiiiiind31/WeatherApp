@@ -28,6 +28,16 @@ public class Weather_hours_model {
     private String IconPhrase;
 
 
+    public Weather_hours_model() {
+    }
+
+    public Weather_hours_model(String date, String temp, String icon, String iconPhrase) {
+        this.Date = date;
+        this.temp = temp;
+        this.Icon = icon;
+        this.IconPhrase = iconPhrase;
+    }
+
     public int getUid() {
         return uid;
     }

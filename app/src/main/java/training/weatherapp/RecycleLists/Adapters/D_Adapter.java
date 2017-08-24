@@ -26,7 +26,7 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
     private List<Weather_days_model> m_items;
 
 
-    public D_Adapter(Context context, ArrayList<Weather_days_model> m_items) {
+    public D_Adapter(Context context, List<Weather_days_model> m_items) {
         this.context = context;
         this.m_items = m_items;
     }

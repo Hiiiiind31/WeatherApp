@@ -16,16 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.Adapters.H_Adapter;
-import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
-import training.weatherapp.RecycleLists.Models.Temp_model_days;
 import training.weatherapp.RoomDatabase.AppDatabase;
+import training.weatherapp.RoomDatabase.Models.Cities_Model;
+import training.weatherapp.RoomDatabase.Models.Settings_Model;
 import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 
@@ -59,76 +59,70 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ///////////////////////
 
-        String i[] = {"Mansoura", "Cairo", "London"};
+         // Create database
+         db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "weather-app").allowMainThreadQueries().build();
+         // set default settings
+         db.settings_Dao().insertAll(new Settings_Model(0,"English","f"));
+         db.cities_Dao().insertAll(new Cities_Model("London",""));
+         db.cities_Dao().insertAll(new Cities_Model("Egypt",""));
+         db.cities_Dao().insertAll(new Cities_Model("Italy",""));
+         db.cities_Dao().insertAll(new Cities_Model("NewYork",""));
+
+
+        ///////////////////////
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), i.length, i);
+
+        int size_cities_list = db.cities_Dao().getAll().size();
+        List<Cities_Model> cities_list = db.cities_Dao().getAll();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), size_cities_list,cities_list);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        /////////////////
-
-         db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").allowMainThreadQueries().build();
-
-
         ////////////
-
-//        // data to populate the RecyclerView with
-//        Simple_temp_list = new ArrayList<>();
-//        Simple_temp_list.add(0, new Temp_Model_hours("10 PM", "", "28"));
-//        Simple_temp_list.add(1, new Temp_Model_hours("11 PM", "", "27"));
-//        Simple_temp_list.add(2, new Temp_Model_hours("12 PM", "", "28"));
-//        Simple_temp_list.add(3, new Temp_Model_hours("1 AM", "", "28"));
-//        Simple_temp_list.add(4, new Temp_Model_hours("2 AM", "", "28"));
-//        Simple_temp_list.add(5, new Temp_Model_hours("3 AM", "", "28"));
-//        Simple_temp_list.add(6, new Temp_Model_hours("4 AM", "", "28"));
-//        Simple_temp_list.add(7, new Temp_Model_hours("5 AM", "", "27"));
-//        Simple_temp_list.add(8, new Temp_Model_hours("6 AM", "", "28"));
-//        Simple_temp_list.add(9, new Temp_Model_hours("7 AM", "", "28"));
-//        Simple_temp_list.add(10, new Temp_Model_hours("8 AM", "", "28"));
-//        Simple_temp_list.add(11, new Temp_Model_hours("9 AM", "", "28"));
-
-
-        // data to populate the RecyclerView with
-
-//        Simple_temp_list2 = new ArrayList<>();
-//        Simple_temp_list2.add(new Temp_model_days("Tomorrow,9Aug", "", "25", "16"));
-//        Simple_temp_list2.add(new Temp_model_days("Fri,10Aug", "", "25", "16"));
-//        Simple_temp_list2.add(new Temp_model_days("Sat,11Aug", "", "25", "16"));
-//        Simple_temp_list2.add(new Temp_model_days("Sun,12Aug", "", "25", "16"));
 
         Days_temp_list =new ArrayList<>();
 
-        W_Days = new Weather_days_model();
-        W_Days.setUid(0);
-        W_Days.setDate("1-9-2017");
-        W_Days.setIcon("");
-        W_Days.setIconPhrase("cloud");
-        W_Days.setMax_temp("25");
-        W_Days.setMin_temp("20");
-        db.WDays_Dao().insertAll(W_Days);
-        Days_temp_list.add(db.WDays_Dao().getAll().get(0));
+        db.WDays_Dao().insertAll(new Weather_days_model("Tomorrow,1sep","17ْ ","10ْ ","","cloud"));
+        db.WDays_Dao().insertAll(new Weather_days_model("Fri,2sep","25ْ ","20ْ ","","sunny"));
+        db.WDays_Dao().insertAll(new Weather_days_model("Sat,3sep","23ْ ","19ْ ","","sunny"));
+        db.WDays_Dao().insertAll(new Weather_days_model("Sun,4sep","28ْ ","20ْ ","","sunny"));
 
-        ///////////////////////////////////////////////////////////
+        List<Weather_days_model> all1 = db.WDays_Dao().getAll();
+
+        /////////////////////////////////////////////////////////
 
         Hours_temp_list = new ArrayList<>();
-        w_Hours = new Weather_hours_model();
-        w_Hours.setUid(0);
-        w_Hours.setDate("2-9-2017");
-        w_Hours.setIcon("");
-        w_Hours.setIconPhrase("Sunny");
-        w_Hours.setTemp("27");
-        db.WHours_Doa().insertAll(w_Hours);
-        Hours_temp_list.add(db.WHours_Doa().getAll().get(0));
+
+        db.WHours_Doa().insertAll(new Weather_hours_model("1 PM","31ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("2 PM","29ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("3 PM","24ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("4 PM","25ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("5 PM","31ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("6 PM","29ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("7 PM","24ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("8 PM","25ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("9 PM","31ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("10 PM","29ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("11 PM","24ْ ","","sunny"));
+        db.WHours_Doa().insertAll(new Weather_hours_model("12 AM","25ْ ","","sunny"));
+
+        List<Weather_hours_model> all2 = db.WHours_Doa().getAll();
 
 
+        for (int i = 0 ; i<4 ;i++){
+            Days_temp_list.add(all1.get(i));
+        }
+
+        for (int i = 0 ; i<12 ;i++){
+            Hours_temp_list.add(all2.get(i));
+        }
 
     }
 
@@ -182,7 +176,6 @@ public class ActivityMain extends AppCompatActivity {
             H_Adapter H_adapter = new H_Adapter(getActivity(),Hours_temp_list);
             recyclerView.setAdapter(H_adapter);
 
-//            ////////////
 
             // set up the Days RecyclerListView
             RecyclerView recyclerView2 = rootView.findViewById(R.id.Recycle_ViewList_days);
@@ -224,12 +217,12 @@ public class ActivityMain extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        int number;
-        String cities[];
-
-        public SectionsPagerAdapter(FragmentManager fm, int number, String[] cities) {
+        int size_of_list;
+        List<Cities_Model> cities
+                ;
+        public SectionsPagerAdapter(FragmentManager fm, int size_of_list, List<Cities_Model> cities) {
             super(fm);
-            this.number = number;
+            this.size_of_list = size_of_list;
             this.cities = cities;
         }
 
@@ -237,13 +230,12 @@ public class ActivityMain extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, cities[position]);
+            return PlaceholderFragment.newInstance(position + 1, cities.get(position).getCites());
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return cities.length;
+            return size_of_list ;
         }
 
     }
