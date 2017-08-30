@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import training.weatherapp.R;
+import training.weatherapp.R ;
 
 public class ActivityCities extends AppCompatActivity {
 
@@ -15,8 +15,10 @@ public class ActivityCities extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(myToolbar);
+
+
+
 
     }
 
@@ -40,6 +42,5 @@ public class ActivityCities extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 }

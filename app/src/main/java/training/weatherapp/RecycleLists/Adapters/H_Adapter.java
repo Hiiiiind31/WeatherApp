@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Models.Temp_Model_hours;
 import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
+import training.weatherapp.Volley.Model_12Hours.Model12hour;
 
 
 /**
@@ -23,10 +28,10 @@ import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
 
     private Context context;
-    private List<Weather_hours_model> m_items;
+    private Model12hour[] m_items;
 
 
-    public H_Adapter(Context context, List<Weather_hours_model> m_items) {
+    public H_Adapter(Context context, Model12hour[] m_items) {
         this.context = context;
         this.m_items = m_items;
     }
@@ -39,15 +44,24 @@ public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tx_hour.setText(m_items.get(position).getDate());
-        holder.tx_temp.setText(m_items.get(position).getTemp());
+        Model12hour model12hour = m_items[position];
 
+        //convert seconds to milliseconds
+        Date date = new Date(model12hour.getEpochDateTime()*1000L);
+
+        // format of the date
+        SimpleDateFormat jdf = new SimpleDateFormat("hh:mm");
+        jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+        String java_date = jdf.format(date);
+
+        holder.tx_hour.setText(java_date);
+        holder.tx_temp.setText(model12hour.getTemperature().getValue()+"ْ ");
 
     }
 
     @Override
     public int getItemCount() {
-        return m_items.size();
+        return 12 ;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
