@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_color"
+    android:orientation="vertical"
+    tools:context="training.weatherapp.Activities.ActivityAddCity">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:onClick="back_img_click"
+                android:tint="@android:color/white"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:text="@string/Add_city"
+                android:textColor="@android:color/white" />
+        </android.support.v7.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/gray"/>
+
+        <EditText
+            android:id="@+id/Search_city_id"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/add_city_border"
+            android:onClick="get_city"
+            android:paddingLeft="13dp"
+            android:textAlignment="inherit"
+            android:textAllCaps="false"
+            android:textIsSelectable="false" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cities_list2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:scrollbars="vertical" />
+
+    </LinearLayout>
+

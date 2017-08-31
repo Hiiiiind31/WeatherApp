@@ -34,6 +34,13 @@ public class Model12hour {
     @Expose
     private String link;
 
+    public Model12hour(Integer epochDateTime, Integer weatherIcon, String iconPhrase, Temperature temperature) {
+        this.epochDateTime = epochDateTime;
+        this.weatherIcon = weatherIcon;
+        this.iconPhrase = iconPhrase;
+        this.temperature = temperature;
+    }
+
     public String getDateTime() {
         return dateTime;
     }

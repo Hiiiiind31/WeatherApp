@@ -2,6 +2,7 @@ package training.weatherapp.Activities;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,9 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import training.weatherapp.R;
@@ -41,7 +41,6 @@ import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 import training.weatherapp.Volley.Model_12Hours.Model12hour;
 import training.weatherapp.Volley.Model_5Days.Model5days;
-import training.weatherapp.Volley.Model_Autocom_cities.Model;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -66,7 +65,9 @@ public class ActivityMain extends AppCompatActivity {
 
     Weather_days_model W_Days;
     Weather_hours_model w_Hours;
-    static AppDatabase db;
+    public static AppDatabase db;
+
+    static Boolean isInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,7 @@ public class ActivityMain extends AppCompatActivity {
                 AppDatabase.class, "weather-app").allowMainThreadQueries().build();
         // set default settings
         db.settings_Dao().insertAll(new Settings_Model(0, "English", "f"));
-        db.cities_Dao().insertAll(new Cities_Model("London", ""));
         db.cities_Dao().insertAll(new Cities_Model("Egypt", ""));
-        db.cities_Dao().insertAll(new Cities_Model("Italy", ""));
-        db.cities_Dao().insertAll(new Cities_Model("NewYork", ""));
 
 
         ///////////////////////
@@ -112,32 +110,12 @@ public class ActivityMain extends AppCompatActivity {
 
         /////////////////////////////////////////////////////////
 
-        Hours_temp_list = new ArrayList<>();
 
-        db.WHours_Doa().insertAll(new Weather_hours_model("1 PM", "31ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("2 PM", "29ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("3 PM", "24ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("4 PM", "25ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("5 PM", "31ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("6 PM", "29ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("7 PM", "24ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("8 PM", "25ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("9 PM", "31ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("10 PM", "29ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("11 PM", "24ْ ", "", "sunny"));
-        db.WHours_Doa().insertAll(new Weather_hours_model("12 AM", "25ْ ", "", "sunny"));
-
-        List<Weather_hours_model> all2 = db.WHours_Doa().getAll();
-
-
-        for (int i = 0; i < 4; i++) {
-            Days_temp_list.add(all1.get(i));
+        if (isInternetOn()) {
+            isInternet = true;
+        } else {
+            isInternet = false;
         }
-
-        for (int i = 0; i < 12; i++) {
-            Hours_temp_list.add(all2.get(i));
-        }
-
     }
 
 
@@ -197,8 +175,28 @@ public class ActivityMain extends AppCompatActivity {
             recyclerView2 = rootView.findViewById(R.id.Recycle_ViewList_days);
             recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-            Get_data_of_5_days();
-            Get_data_of_12_Hours();
+
+            if (isInternet) {
+                Get_data_of_5_days();
+                Get_data_of_12_Hours();
+
+            } else {
+
+                Get_data_of_5_days_from_db();
+                Get_data_of_12_Hours_from_db();
+
+
+            }
+        }
+
+        private void Get_data_of_12_Hours_from_db() {
+
+
+        }
+
+
+        private void Get_data_of_5_days_from_db() {
+
 
         }
 
@@ -243,7 +241,11 @@ public class ActivityMain extends AppCompatActivity {
                     Model12hour[] model12hours = gson.fromJson(response, Model12hour[].class);
                     H_Adapter H_adapter = new H_Adapter(getActivity(), model12hours);
                     recyclerView.setAdapter(H_adapter);
+                    add_data_of_12hour_in_database(model12hours);
+
                 }
+
+
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -254,6 +256,19 @@ public class ActivityMain extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(getContext());
             queue.add(req);
+        }
+
+        private void add_data_of_12hour_in_database(Model12hour[] response) {
+
+            for (int i = 0; i < response.length; i++) {
+
+                String epochDateTime = String.valueOf(response[i].getEpochDateTime());
+                String value = String.valueOf(response[i].getTemperature().getValue());
+                String iconPhrase = response[i].getIconPhrase();
+                String weatherIcon = String.valueOf(response[i].getWeatherIcon());
+                db.WHours_Doa().insertAll(new Weather_hours_model(epochDateTime, value, weatherIcon, iconPhrase));
+            }
+
         }
 
 
@@ -272,6 +287,10 @@ public class ActivityMain extends AppCompatActivity {
                     Model5days model5dayses = gson.fromJson(response, Model5days.class);
                     D_Adapter D_adapter = new D_Adapter(getActivity(), model5dayses);
                     recyclerView2.setAdapter(D_adapter);
+
+                    add_data_of_5Days_in_database(model5dayses);
+
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -285,8 +304,22 @@ public class ActivityMain extends AppCompatActivity {
             queue.add(req);
         }
 
+        private void add_data_of_5Days_in_database(Model5days response) {
 
-}
+            for (int i = 0; i < response.getDailyForecasts().size(); i++) {
+
+                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getDate());
+                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum());
+                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum());
+                String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
+                String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
+                db.WDays_Dao().insertAll(new Weather_days_model(epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
+            }
+
+        }
+
+
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -322,6 +355,32 @@ public class ActivityMain extends AppCompatActivity {
         super.onBackPressed();
     }
 
+
+    private boolean isInternetOn() {
+
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connec =
+                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+
+            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
+            return true;
+
+        } else if (
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+
+            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return false;
     }
 
-
+}

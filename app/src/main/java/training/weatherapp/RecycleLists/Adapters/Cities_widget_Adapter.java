@@ -13,12 +13,12 @@ import training.weatherapp.R;
  * Created by hindahmed on 22/08/17.
  */
 
-public class Cities_Adapter extends RecyclerView.Adapter<Cities_Adapter.ViewHolder> {
+public class Cities_widget_Adapter extends RecyclerView.Adapter<Cities_widget_Adapter.ViewHolder> {
 
     private Context context ;
     private String[] m_items;
 
-    public Cities_Adapter(Context context, String[] m_items) {
+    public Cities_widget_Adapter(Context context, String[] m_items) {
         this.context = context;
         this.m_items = m_items;
     }
@@ -26,7 +26,7 @@ public class Cities_Adapter extends RecyclerView.Adapter<Cities_Adapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cities_list_item, parent, false);
-        return new Cities_Adapter.ViewHolder(itemView);
+        return new Cities_widget_Adapter.ViewHolder(itemView);
     }
 
     @Override

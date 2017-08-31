@@ -9,17 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import training.weatherapp.R;
-import training.weatherapp.RecycleLists.Models.Temp_model_days;
-import training.weatherapp.RoomDatabase.Models.Weather_days_model;
+;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
 import static java.lang.Long.parseLong;
@@ -64,7 +59,7 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 4 ;
+        return m_items.getDailyForecasts().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

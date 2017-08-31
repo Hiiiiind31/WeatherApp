@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import training.weatherapp.R;
-import training.weatherapp.RecycleLists.Adapters.Cities_Adapter;
+import training.weatherapp.RecycleLists.Adapters.Cities_widget_Adapter;
 
 public class ActivityWeatherWidget extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class ActivityWeatherWidget extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        Cities_Adapter cities_adapter = new Cities_Adapter(this,i);
+        Cities_widget_Adapter cities_adapter = new Cities_widget_Adapter(this,i);
         recyclerView.setAdapter(cities_adapter);
     }
 

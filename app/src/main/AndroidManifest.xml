@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="training.weatherapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".Activities.ActivitySettings" />
         <activity android:name=".Activities.ActivityCities" />
-        <activity android:name=".Activities.ActivityWeatherWidget"></activity>
+        <activity android:name=".Activities.ActivityWeatherWidget" />
+        <activity android:name=".Activities.ActivityAddCity"></activity>
     </application>
 
 </manifest>

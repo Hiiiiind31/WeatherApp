@@ -1,5 +1,5 @@
 
-package training.weatherapp.Volley.Model_Autocom_cities;
+package training.weatherapp.Volley.Model_Cities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
