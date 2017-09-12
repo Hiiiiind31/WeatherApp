@@ -1,4 +1,4 @@
-package training.weatherapp.RecycleLists.Adapters;
+package training.weatherapp.RecycleLists.Offline_Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,58 +9,58 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import training.weatherapp.R;
-;
-import training.weatherapp.Volley.Model_5Days.Model5days;
-
-import static java.lang.Long.parseLong;
+import training.weatherapp.RecycleLists.Adapters.Cities_View_Adapter;
+import training.weatherapp.RecycleLists.Adapters.D_Adapter;
+import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
+import training.weatherapp.RoomDatabase.Models.Cities_Model;
 
 /**
- * Created by hindahmed on 16/08/17.
+ * Created by hindahmed on 12/09/17.
  */
 
-public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
+public class Offline_5D_Adapter_ extends RecyclerView.Adapter<Offline_5D_Adapter_.ViewHolder> {
 
 
     private Context context;
-    private Model5days m_items;
+    private List<Offline_model_5Days> m_items;
 
-
-    public D_Adapter(Context context, Model5days m_items) {
+    public Offline_5D_Adapter_(Context context, List<Offline_model_5Days> m_items) {
         this.context = context;
         this.m_items = m_items;
     }
 
     @Override
-    public D_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.days_list_item, parent, false);
-        return new D_Adapter.ViewHolder(itemView);
+        return new Offline_5D_Adapter_.ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(D_Adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Integer epochDate = m_items.getDailyForecasts().get(position).getEpochDate();
+        int epochDateTime = Integer.parseInt(m_items.get(position).getD_Date());
 
         //convert seconds to milliseconds
-        Date date = new Date(epochDate*1000L);
+        Date date = new Date(epochDateTime * 1000L);
         // format of the date
         SimpleDateFormat jdf = new SimpleDateFormat("EE, MMM d");
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
-
         holder.tx_time.setText(java_date);
-        holder.tx_temp_mm.setText(m_items.getDailyForecasts().get(position).getTemperature().getMaximum().getValue().intValue()+" ْ"+"/"+m_items.getDailyForecasts().get(position).getTemperature().getMinimum().getValue().intValue()+" ْ");
+        holder.tx_temp_mm.setText(m_items.get(position).getD_Max_Temp() + " ْ " + "/" + m_items.get(position).getD_Min_Temp() + " ْ ");
+
     }
 
     @Override
     public int getItemCount() {
-        return m_items.getDailyForecasts().size();
+        return m_items.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -77,5 +77,3 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
         }
     }
 }
-
-

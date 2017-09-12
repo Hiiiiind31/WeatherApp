@@ -1,10 +1,10 @@
-package training.weatherapp.RecycleLists.Models;
+package training.weatherapp.RecycleLists.offline_Models;
 
 /**
- * Created by hindahmed on 16/08/17.
+ * Created by hindahmed on 12/09/17.
  */
 
-public class Temp_model_days {
+public class Offline_model_5Days {
 
 
     private String d_Date;
@@ -12,7 +12,7 @@ public class Temp_model_days {
     private String d_Max_Temp;
     private String d_Min_Temp;
 
-    public Temp_model_days(String d_Date, String d_Image, String d_Max_Temp, String d_Min_Temp) {
+    public Offline_model_5Days(String d_Date, String d_Image, String d_Max_Temp, String d_Min_Temp) {
         this.d_Date = d_Date;
         this.d_Image = d_Image;
         this.d_Max_Temp = d_Max_Temp;

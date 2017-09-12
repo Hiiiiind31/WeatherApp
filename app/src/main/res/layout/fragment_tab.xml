@@ -70,26 +70,23 @@
                 android:paddingTop="30dp">
 
                 <TextView
-                    android:id="@+id/Temp"
+                    android:id="@+id/main_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="28ْ "
                     android:textSize="100sp"
                     android:textColor="@android:color/white" />
 
                 <TextView
-                    android:id="@+id/weather_in_text"
+                    android:id="@+id/main_w_phrase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mostly sunny"
                     android:textSize="25sp"
                     android:textColor="@android:color/white" />
 
                 <TextView
-                    android:id="@+id/Temp_min_max"
+                    android:id="@+id/main_max_min_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="37ْ / 22ْ "
                     android:textSize="25sp"
                     android:textColor="@android:color/white" />
 

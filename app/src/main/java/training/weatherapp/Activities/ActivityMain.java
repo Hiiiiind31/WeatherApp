@@ -28,12 +28,20 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
+import training.weatherapp.PrefManager;
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.Adapters.H_Adapter;
+import training.weatherapp.RecycleLists.Offline_Adapter.Offline_12H_Adapter;
+import training.weatherapp.RecycleLists.Offline_Adapter.Offline_5D_Adapter_;
+import training.weatherapp.RecycleLists.offline_Models.Offline_Model_12Hours;
+import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
 import training.weatherapp.RoomDatabase.AppDatabase;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
 import training.weatherapp.RoomDatabase.Models.Settings_Model;
@@ -41,6 +49,8 @@ import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 import training.weatherapp.Volley.Model_12Hours.Model12hour;
 import training.weatherapp.Volley.Model_5Days.Model5days;
+
+import static io.reactivex.schedulers.Schedulers.start;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -68,22 +78,38 @@ public class ActivityMain extends AppCompatActivity {
     public static AppDatabase db;
 
     static Boolean isInternet;
+    PrefManager prefManager;
+
+    public static TextView main_temp;
+    public static TextView main_max_min_temp;
+    public static TextView main_w_phrase;
+
+    static RequestQueue queue ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        queue = Volley.newRequestQueue(this);
 
         // Create database
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "weather-app").allowMainThreadQueries().build();
-        // set default settings
-        db.settings_Dao().insertAll(new Settings_Model(0, "English", "f"));
-        db.cities_Dao().insertAll(new Cities_Model("Egypt", ""));
 
+        // Checking for first time launch
+        prefManager = new PrefManager(this);
+        if (prefManager.isFirstTimeLaunch()) {
+            prefManager.setFirstTimeLaunch(false);
+
+            // set default settings
+            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true"));
+            db.cities_Dao().insertAll(new Cities_Model("London", "55489"));
+
+        }
 
         ///////////////////////
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -96,17 +122,11 @@ public class ActivityMain extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        ///////////
+        main_temp = (TextView) findViewById(R.id.main_temp);
+        main_max_min_temp = (TextView) findViewById(R.id.main_max_min_temp);
+        main_w_phrase = (TextView) findViewById(R.id.main_w_phrase);
 
-        ////////////
-
-        Days_temp_list = new ArrayList<>();
-
-        db.WDays_Dao().insertAll(new Weather_days_model("Tomorrow,1sep", "17ْ ", "10ْ ", "", "cloud"));
-        db.WDays_Dao().insertAll(new Weather_days_model("Fri,2sep", "25ْ ", "20ْ ", "", "sunny"));
-        db.WDays_Dao().insertAll(new Weather_days_model("Sat,3sep", "23ْ ", "19ْ ", "", "sunny"));
-        db.WDays_Dao().insertAll(new Weather_days_model("Sun,4sep", "28ْ ", "20ْ ", "", "sunny"));
-
-        List<Weather_days_model> all1 = db.WDays_Dao().getAll();
 
         /////////////////////////////////////////////////////////
 
@@ -134,6 +154,8 @@ public class ActivityMain extends AppCompatActivity {
         RecyclerView recyclerView2;
         H_Adapter H_adapter;
         D_Adapter D_adapter;
+
+
 
         public PlaceholderFragment() {
         }
@@ -177,26 +199,64 @@ public class ActivityMain extends AppCompatActivity {
 
 
             if (isInternet) {
-                Get_data_of_5_days();
-                Get_data_of_12_Hours();
+                Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
             } else {
 
-                Get_data_of_5_days_from_db();
-                Get_data_of_12_Hours_from_db();
+                Get_offline_data_of_5_days_from_db(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                Get_offline_data_of_12_Hours_from_db(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
 
             }
         }
 
-        private void Get_data_of_12_Hours_from_db() {
+        private void Get_offline_data_of_12_Hours_from_db(Cities_Model cities_model){
 
+
+            String Temp, Date, Icon, Icon_phrase;
+            ArrayList<Offline_Model_12Hours> offlineModel12Hourses = new ArrayList<>();
+
+            for (int i = 0; i < 12; i++) {
+
+
+                Temp = db.WHours_Doa().getAll().get(i).getTemp();
+                Date = db.WHours_Doa().getAll().get(i).getDate();
+                Icon = db.WHours_Doa().getAll().get(i).getIcon();
+                Icon_phrase = db.WHours_Doa().getAll().get(i).getIconPhrase();
+
+                Offline_Model_12Hours offline_model_12hours = new Offline_Model_12Hours(Date, Icon, Temp, Icon_phrase);
+
+                offlineModel12Hourses.add(offline_model_12hours);
+
+            }
+            Offline_12H_Adapter offline_12H_adapter = new Offline_12H_Adapter(getContext(), offlineModel12Hourses);
+            recyclerView.setAdapter(offline_12H_adapter);
 
         }
 
 
-        private void Get_data_of_5_days_from_db() {
+        private void Get_offline_data_of_5_days_from_db(Cities_Model cities_model) {
 
+
+            String Max_temp, Min_temp, Date, Icon;
+            ArrayList<Offline_model_5Days> offlineModel5Dayses = new ArrayList<>();
+
+
+            for (int i = 0; i < 4; i++) {
+
+
+                Min_temp = db.WDays_Dao().getAll().get(i).getMin_temp();
+                Max_temp = db.WDays_Dao().getAll().get(i).getMax_temp();
+                Date = db.WDays_Dao().getAll().get(i).getDate();
+                Icon = db.WDays_Dao().getAll().get(i).getIcon();
+                Offline_model_5Days offline_model_5Days = new Offline_model_5Days(Date, Icon, Max_temp, Min_temp);
+
+                offlineModel5Dayses.add(offline_model_5Days);
+
+            }
+            Offline_5D_Adapter_ offline_5D_adapter_ = new Offline_5D_Adapter_(getContext(), offlineModel5Dayses);
+            recyclerView2.setAdapter(offline_5D_adapter_);
 
         }
 
@@ -226,94 +286,127 @@ public class ActivityMain extends AppCompatActivity {
 
         }
 
-        private void Get_data_of_12_Hours() {
+        private void Get_data_of_12_Hours(final Cities_Model cities_model) {
 
-            String url = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/55489?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=en-us";
-            StringRequest req = new StringRequest(url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
 
-                    Log.d("code", response);
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String city = cities_model.getCities_keys();
+                        String lang = db.settings_Dao().getAll().get(0).getLang();
+                        String metric = db.settings_Dao().getAll().get(0).getMetric();
 
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
+                        String url = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
+                        StringRequest req = new StringRequest(url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
 
-                    Model12hour[] model12hours = gson.fromJson(response, Model12hour[].class);
-                    H_Adapter H_adapter = new H_Adapter(getActivity(), model12hours);
-                    recyclerView.setAdapter(H_adapter);
-                    add_data_of_12hour_in_database(model12hours);
+                                GsonBuilder builder = new GsonBuilder();
+                                Gson gson = builder.create();
 
+                                Model12hour[] model12hours = gson.fromJson(response, Model12hour[].class);
+                                H_Adapter H_adapter = new H_Adapter(getActivity(), model12hours);
+                                recyclerView.setAdapter(H_adapter);
+                                add_data_of_12hour_in_database(model12hours);
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("error", error.getMessage());
+
+                            }
+                        });
+
+                        queue.add(req);
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                    }
                 }
+            }).start();
 
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("error", error.getMessage());
-
-                }
-            });
-
-            RequestQueue queue = Volley.newRequestQueue(getContext());
-            queue.add(req);
         }
 
         private void add_data_of_12hour_in_database(Model12hour[] response) {
 
+            String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
+
+            Log.d("city_key",db.cities_Dao().getAll().contains(city_keys)+"");
+
+
             for (int i = 0; i < response.length; i++) {
 
-                String epochDateTime = String.valueOf(response[i].getEpochDateTime());
-                String value = String.valueOf(response[i].getTemperature().getValue());
+                String epochDateTime = String.valueOf(response[i].getEpochDateTime().intValue());
+                String value = String.valueOf(response[i].getTemperature().getValue().intValue());
                 String iconPhrase = response[i].getIconPhrase();
                 String weatherIcon = String.valueOf(response[i].getWeatherIcon());
-                db.WHours_Doa().insertAll(new Weather_hours_model(epochDateTime, value, weatherIcon, iconPhrase));
+                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys,epochDateTime, value, weatherIcon, iconPhrase));
             }
 
         }
 
 
-        private void Get_data_of_5_days() {
-
-            String url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/55489?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=en-us";
-            StringRequest req = new StringRequest(url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    Log.d("code", response);
-
-                    GsonBuilder builder = new GsonBuilder();
-                    Gson gson = builder.create();
-
-                    Model5days model5dayses = gson.fromJson(response, Model5days.class);
-                    D_Adapter D_adapter = new D_Adapter(getActivity(), model5dayses);
-                    recyclerView2.setAdapter(D_adapter);
-
-                    add_data_of_5Days_in_database(model5dayses);
+        private void Get_data_of_5_days(final Cities_Model cities_model) {
 
 
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+
+                        String city = cities_model.getCities_keys();
+                        String lang = db.settings_Dao().getAll().get(0).getLang();
+                        String metric = db.settings_Dao().getAll().get(0).getMetric();
+
+                        String url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
+                        StringRequest req = new StringRequest(url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+
+                                Log.d("code", response);
+
+                                GsonBuilder builder = new GsonBuilder();
+                                Gson gson = builder.create();
+
+                                Model5days model5dayses = gson.fromJson(response, Model5days.class);
+                                D_Adapter D_adapter = new D_Adapter(getActivity(), model5dayses);
+                                recyclerView2.setAdapter(D_adapter);
+
+                                add_data_of_5Days_in_database(model5dayses);
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("error", error.getMessage());
+
+                            }
+                        });
+
+                        queue.add(req);
+
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), "Error" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("error", error.getMessage());
+            }).start();
 
-                }
-            });
-
-            RequestQueue queue = Volley.newRequestQueue(getContext());
-            queue.add(req);
         }
+
 
         private void add_data_of_5Days_in_database(Model5days response) {
 
             for (int i = 0; i < response.getDailyForecasts().size(); i++) {
 
-                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getDate());
-                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum());
-                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum());
+
+                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getEpochDate().intValue());
+                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
+                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
                 String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
                 String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
-                db.WDays_Dao().insertAll(new Weather_days_model(epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
+                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
+
+                db.WDays_Dao().insertAll(new Weather_days_model(city_keys,epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
             }
 
         }

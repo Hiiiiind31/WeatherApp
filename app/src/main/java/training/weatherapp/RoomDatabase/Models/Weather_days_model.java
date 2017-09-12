@@ -16,6 +16,9 @@ public class Weather_days_model {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
+    @ColumnInfo(name = "city_key")
+    private String city_key;
+
     @ColumnInfo(name = "date")
     private String Date;
 
@@ -35,12 +38,21 @@ public class Weather_days_model {
     public Weather_days_model() {
     }
 
-    public Weather_days_model(String date, String max_temp, String min_temp, String icon, String iconPhrase) {
+    public Weather_days_model( String city_key, String date, String max_temp, String min_temp, String icon, String iconPhrase) {
+        this.city_key = city_key;
         this.Date = date;
         this.Max_temp = max_temp;
         this.Min_temp = min_temp;
         this.Icon = icon;
         this.IconPhrase = iconPhrase;
+    }
+
+    public String getCity_key() {
+        return city_key;
+    }
+
+    public void setCity_key(String city_key) {
+        this.city_key = city_key;
     }
 
     public int getUid() {

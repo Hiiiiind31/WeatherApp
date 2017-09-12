@@ -15,6 +15,9 @@ public class Weather_hours_model {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
+    @ColumnInfo(name = "city_key")
+    private String city_key;
+
     @ColumnInfo(name = "Date")
     private String Date ;
 
@@ -31,11 +34,20 @@ public class Weather_hours_model {
     public Weather_hours_model() {
     }
 
-    public Weather_hours_model(String date, String temp, String icon, String iconPhrase) {
+    public Weather_hours_model(String city_key, String date, String temp, String icon, String iconPhrase) {
+        this.city_key = city_key;
         this.Date = date;
         this.temp = temp;
         this.Icon = icon;
-        this.IconPhrase = iconPhrase;
+       this.IconPhrase = iconPhrase;
+    }
+
+    public String getCity_key() {
+        return city_key;
+    }
+
+    public void setCity_key(String city_key) {
+        this.city_key = city_key;
     }
 
     public int getUid() {
