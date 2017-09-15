@@ -6,12 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.Cities_widget_Adapter;
 
+import static training.weatherapp.Activities.ActivityMain.rootView;
+import static training.weatherapp.Activities.ActivitySettings.isRTL;
+
 public class ActivityWeatherWidget extends AppCompatActivity {
 
+    ImageView icon6;
+    LinearLayout widget_layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +30,16 @@ public class ActivityWeatherWidget extends AppCompatActivity {
 
         Cities_widget_Adapter cities_adapter = new Cities_widget_Adapter(this,i);
         recyclerView.setAdapter(cities_adapter);
+
+        icon6 = (ImageView) findViewById(R.id.icon6);
+        widget_layout = (LinearLayout) findViewById(R.id.widget_layout);
+
+
+        if (!isRTL(rootView)) {
+            icon6.setRotation(180);
+            widget_layout.setRotation(360);
+
+        }
     }
 
     public void back_img_click(View v) {

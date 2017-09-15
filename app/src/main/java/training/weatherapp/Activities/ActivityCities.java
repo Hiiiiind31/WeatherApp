@@ -6,34 +6,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
-import training.weatherapp.R ;
+import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.Cities_View_Adapter;
-import training.weatherapp.RecycleLists.Adapters.D_Adapter;
-import training.weatherapp.RecycleLists.Adapters.cities_Adapter;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
-import training.weatherapp.Volley.Model_5Days.Model5days;
-import training.weatherapp.Volley.Model_Cities.ModelCity;
 
 import static training.weatherapp.Activities.ActivityMain.db;
-import static training.weatherapp.R.id.cities_list;
+import static training.weatherapp.Activities.ActivityMain.rootView;
+import static training.weatherapp.Activities.ActivitySettings.isRTL;
 
 public class ActivityCities extends AppCompatActivity {
 
     RecyclerView cities_listview;
+    ImageView icon4;
+    LinearLayout mag_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +32,9 @@ public class ActivityCities extends AppCompatActivity {
         setContentView(R.layout.activity_cities);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        icon4 = (ImageView) findViewById(R.id.icon4);
+        mag_layout = (LinearLayout) findViewById(R.id.Man_layout);
 
         cities_listview = (RecyclerView) findViewById(R.id.cities_listview);
         cities_listview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -51,6 +45,12 @@ public class ActivityCities extends AppCompatActivity {
              cities_listview.setAdapter(cities_adapter);
          }
 
+        if (!isRTL(rootView)) {
+            icon4.setRotation(180);
+            mag_layout.setRotation(360);
+            cities_listview.setRotation(360);
+
+        }
     }
 
 

@@ -9,9 +9,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,7 +23,7 @@ import java.util.Locale;
 
 import training.weatherapp.R;
 
-import static training.weatherapp.Activities.ActivityMain.db;
+import static training.weatherapp.Activities.ActivityMain.rootView;
 
 
 public class ActivitySettings extends AppCompatActivity {
@@ -30,6 +33,18 @@ public class ActivitySettings extends AppCompatActivity {
     Button Cancel, Ok;
     Dialog T_dialog, L_dialog;
     TextView Temp_txt_sett, Lang_txt_sett;
+    ImageView icon1, icon2, icon3;
+    Toolbar toolbar;
+    LinearLayout sett_layout;
+
+    public static boolean isRTL(View view) {
+        if (view == null)
+            return false;
+
+        // config.getLayoutDirection() only available since 4.2
+        // -> using ViewCompat instead (from Android support library)
+        return ViewCompat.LAYOUT_DIRECTION_LTR == ViewCompat.getLayoutDirection(view);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +54,13 @@ public class ActivitySettings extends AppCompatActivity {
 
         Temp_txt_sett = (TextView) findViewById(R.id.temp_txtview_sett);
         Lang_txt_sett = (TextView) findViewById(R.id.lan_txtview_sett);
+
+        icon1 = (ImageView) findViewById(R.id.icon1);
+        icon2 = (ImageView) findViewById(R.id.icon2);
+        icon3 = (ImageView) findViewById(R.id.icon3);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        sett_layout = (LinearLayout) findViewById(R.id.sett_layout);
 
         // Temp custom dialog
         T_dialog = new Dialog(this, R.style.FullHeightDialog);
@@ -103,7 +125,7 @@ public class ActivitySettings extends AppCompatActivity {
         Rd_Eng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //setLocal("en");
+                setLocal("en");
                 Lang_txt_sett.setText("English");
                 L_dialog.dismiss();
             }
@@ -111,40 +133,36 @@ public class ActivitySettings extends AppCompatActivity {
         Rd_Ara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // setLocal("ara");
+                setLocal("ar");
                 Lang_txt_sett.setText("Arabic");
                 L_dialog.dismiss();
 
             }
         });
 
+
+        if (!isRTL(rootView)) {
+            icon1.setRotation(180);
+            icon2.setRotation(180);
+            icon3.setRotation(180);
+            sett_layout.setRotation(360);
+
+        }
     }
 
-//    private void setLocal(String language) {
-//
-//        Locale myLocale = new Locale(language);
-//        Resources res = getResources();
-//        DisplayMetrics dm = res.getDisplayMetrics();
-//        Configuration conf = res.getConfiguration();
-//        conf.locale = myLocale;
-//        conf.setLayoutDirection(myLocale);
-//        res.updateConfiguration(conf, dm);
-//        Intent intent = new Intent(this, ActivityMain.class);
-//        startActivity(intent);
-//        finish();
-//    }
+    private void setLocal(String language) {
 
-//    public static boolean isRTL(View view) {
-//        if (view == null)
-//            return false;
-//
-//        // config.getLayoutDirection() only available since 4.2
-//        // -> using ViewCompat instead (from Android support library)
-//        if (ViewCompat.LAYOUT_DIRECTION_LTR == ViewCompat.getLayoutDirection(view)) {
-//            return true;
-//        }
-//        return false;
-//    }
+        Locale myLocale = new Locale(language);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        conf.setLayoutDirection(myLocale);
+        res.updateConfiguration(conf, dm);
+        Intent intent = new Intent(this, ActivityMain.class);
+        startActivity(intent);
+    }
+
 //    public void changeLang(String lang) {
 //        if (lang.equalsIgnoreCase(""))
 //            return;

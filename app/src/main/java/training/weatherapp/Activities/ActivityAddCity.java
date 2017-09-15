@@ -1,14 +1,14 @@
 package training.weatherapp.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,10 +22,15 @@ import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.cities_Adapter;
 import training.weatherapp.Volley.Model_Cities.ModelCity;
 
+import static training.weatherapp.Activities.ActivityMain.rootView;
+import static training.weatherapp.Activities.ActivitySettings.isRTL;
+
 public class ActivityAddCity extends AppCompatActivity {
 
     RecyclerView cities_list;
     EditText search_city;
+    LinearLayout add_city_layout;
+    ImageView icon5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,14 @@ public class ActivityAddCity extends AppCompatActivity {
         cities_list = (RecyclerView) findViewById(R.id.cities_list2);
         cities_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         search_city = (EditText) findViewById(R.id.Search_city_id);
+        icon5 = (ImageView) findViewById(R.id.icon5);
+        add_city_layout = (LinearLayout) findViewById(R.id.add_city_layout);
 
+        if (!isRTL(rootView)) {
+            icon5.setRotation(180);
+            add_city_layout.setRotation(360);
+
+        }
 
 
     }

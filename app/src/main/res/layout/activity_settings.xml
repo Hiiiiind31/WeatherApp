@@ -15,21 +15,29 @@
         android:background="@android:color/transparent"
         android:gravity="center">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:onClick="back_img_click"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:tint="@android:color/white"
-            android:id="@+id/imageView" />
+        <LinearLayout
+            android:id="@+id/sett_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:text="@string/Settings"
-            android:textColor="@android:color/white"
-            android:layout_alignBottom="@+id/imageView" />
+            <ImageView
+                android:id="@+id/icon3"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:onClick="back_img_click"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@android:color/white" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:text="@string/Settings"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <View
@@ -49,8 +57,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:onClick="temp_units"
+            android:orientation="horizontal"
             android:weightSum="5">
 
             <TextView
@@ -59,27 +67,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/Temperature"
                 android:layout_weight="4"
+                android:text="@string/Temperature"
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/temp_txtview_sett"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Auto (ْ F)"
                 android:layout_weight="1"
-                android:textColor="@android:color/darker_gray"
-                android:id="@+id/temp_txtview_sett" />
+                android:text="Auto (ْ F)"
+                android:textColor="@android:color/darker_gray" />
 
             <ImageView
+                android:id="@+id/icon1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:layout_marginTop="14dp"
-                android:tint="@android:color/white"
-                android:src="@drawable/ic_chevron_right_black_24dp" />
+                android:src="@drawable/ic_chevron_right_black_24dp"
+                android:tint="@android:color/white" />
         </LinearLayout>
 
 
@@ -92,8 +101,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:onClick="lang_sett"
+            android:orientation="horizontal"
             android:weightSum="5">
 
             <TextView
@@ -102,26 +111,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/language"
                 android:layout_weight="4"
+                android:text="@string/language"
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/lan_txtview_sett"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/English"
                 android:layout_weight="1"
-                android:textColor="@android:color/darker_gray"
-                android:id="@+id/lan_txtview_sett" />
+                android:text="@string/English"
+                android:textColor="@android:color/darker_gray" />
+
             <ImageView
+                android:id="@+id/icon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:layout_marginTop="14dp"
-                android:tint="@android:color/white"
-                android:src="@drawable/ic_chevron_right_black_24dp" />
+                android:src="@drawable/ic_chevron_right_black_24dp"
+                android:tint="@android:color/white" />
 
 
         </LinearLayout>

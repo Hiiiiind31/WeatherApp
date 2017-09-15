@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="app_name">WeatherApp</string>
+    <string name="Masoura">AlMansoura</string>
+    <string name="Manage_cities">إدارة المدن</string>
+    <string name="Add_city">إضافة مدينة</string>
+    <string name="Weather_widget">العرض</string>
+    <string name="Settings">الأعدادات</string>
+    <string name="Temperature">وحدات الحرارة</string>
+    <string name="language">اللغة</string>
+    <string name="auto">الاساسي(فهرنهيت)</string>
+    <string name="C">ْ c</string>
+    <string name="F">ْ F</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">تم</string>
+    <string name="Arabic">عربي</string>
+    <string name="English">إنجليزي</string>
+    <string name="Current_location">الموقع الحالي</string>
+    <string name="city_home">المدينة الأساسية</string>
+</resources>
