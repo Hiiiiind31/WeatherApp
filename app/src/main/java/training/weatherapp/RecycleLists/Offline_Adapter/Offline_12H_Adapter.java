@@ -50,7 +50,7 @@ public class Offline_12H_Adapter extends  RecyclerView.Adapter<Offline_12H_Adapt
         Date date = new Date(echo*1000L);
 
         // format of the date
-        SimpleDateFormat jdf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat jdf = new SimpleDateFormat("hh:mm a");
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
