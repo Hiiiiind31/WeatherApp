@@ -2,6 +2,7 @@ package training.weatherapp.Activities;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,11 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +53,8 @@ import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 import training.weatherapp.Volley.Model_12Hours.Model12hour;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
-import static io.reactivex.schedulers.Schedulers.start;
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dots;
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dotsLayout;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -84,7 +88,8 @@ public class ActivityMain extends AppCompatActivity {
     public static TextView main_max_min_temp;
     public static TextView main_w_phrase;
 
-    static RequestQueue queue ;
+    static RequestQueue queue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +110,6 @@ public class ActivityMain extends AppCompatActivity {
             // set default settings
             db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true", "English", "C"));
             db.cities_Dao().insertAll(new Cities_Model("London", "55489"));
-
         }
 
         ///////////////////////
@@ -136,7 +140,35 @@ public class ActivityMain extends AppCompatActivity {
         } else {
             isInternet = false;
         }
+
+
     }
+
+    private boolean isInternetOn() {
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connec =
+                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+
+            return true;
+
+        } else if (
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+
+            return false;
+        }
+        return false;
+    }
+
+
 
 
     /**
@@ -154,7 +186,8 @@ public class ActivityMain extends AppCompatActivity {
         RecyclerView recyclerView2;
         H_Adapter H_adapter;
         D_Adapter D_adapter;
-
+        static TextView[] dots;
+        static LinearLayout dotsLayout;
 
 
         public PlaceholderFragment() {
@@ -170,22 +203,63 @@ public class ActivityMain extends AppCompatActivity {
             args.putString(ARG_page_content, page_content);
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+
             return fragment;
         }
+
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+
             rootView = inflater.inflate(R.layout.fragment_tab, container, false);
+
+            dotsLayout = rootView.findViewById(R.id.layoutDots);
+            addBottomDots(getArguments().getInt(ARG_SECTION_NUMBER) - 1);
 
             Tool_bar(rootView);
             Recycle_design(rootView);
 
             TextView City_Name = rootView.findViewById(R.id.city_name);
             City_Name.setText(getArguments().getString(ARG_page_content));
+            ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    addBottomDots(position);
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    addBottomDots(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            };
 
             return rootView;
         }
+
+        public void addBottomDots(int currentPage) {
+            dots = new TextView[db.cities_Dao().getAll().size()];
+
+            dotsLayout.removeAllViews();
+            for (int i = 0; i < dots.length; i++) {
+                dots[i] = new TextView(getContext());
+                dots[i].setText(Html.fromHtml("&#8226;"));
+                dots[i].setTextSize(30);
+                dots[i].setTextColor(Color.GRAY);
+                dotsLayout.addView(dots[i]);
+            }
+            if (dots.length > 0)
+                dots[currentPage].setTextColor(Color.WHITE);
+        }
+
 
         private void Recycle_design(View rootView) {
 
@@ -211,7 +285,7 @@ public class ActivityMain extends AppCompatActivity {
             }
         }
 
-        private void Get_offline_data_of_12_Hours_from_db(Cities_Model cities_model){
+        private void Get_offline_data_of_12_Hours_from_db(Cities_Model cities_model) {
 
 
             String Temp, Date, Icon, Icon_phrase;
@@ -331,7 +405,7 @@ public class ActivityMain extends AppCompatActivity {
 
             String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
 
-            Log.d("city_key",db.cities_Dao().getAll().contains(city_keys)+"");
+            Log.d("city_key", db.cities_Dao().getAll().contains(city_keys) + "");
 
 
             for (int i = 0; i < response.length; i++) {
@@ -340,7 +414,7 @@ public class ActivityMain extends AppCompatActivity {
                 String value = String.valueOf(response[i].getTemperature().getValue().intValue());
                 String iconPhrase = response[i].getIconPhrase();
                 String weatherIcon = String.valueOf(response[i].getWeatherIcon());
-                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys,epochDateTime, value, weatherIcon, iconPhrase));
+                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, weatherIcon, iconPhrase));
             }
 
         }
@@ -406,13 +480,14 @@ public class ActivityMain extends AppCompatActivity {
                 String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
                 String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
 
-                db.WDays_Dao().insertAll(new Weather_days_model(city_keys,epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
+                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
             }
 
         }
 
 
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -421,6 +496,7 @@ public class ActivityMain extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         int size_of_list;
         List<Cities_Model> cities;
+
 
         public SectionsPagerAdapter(FragmentManager fm, int size_of_list, List<Cities_Model> cities) {
             super(fm);
@@ -440,40 +516,9 @@ public class ActivityMain extends AppCompatActivity {
             return size_of_list;
         }
 
+
+
+
+
     }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-
-    private boolean isInternetOn() {
-
-        // get Connectivity Manager object to check connection
-        ConnectivityManager connec =
-                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
-
-        // Check for network connections
-        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
-                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
-
-            // if connected with internet
-
-            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
-            return true;
-
-        } else if (
-                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
-                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
-
-            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return false;
-    }
-
 }

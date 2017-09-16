@@ -36,8 +36,8 @@
                 android:gravity="center_horizontal"
                 android:text="@string/Masoura"
                 android:textAlignment="center"
-                android:textSize="18sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/Settings_img"
@@ -50,10 +50,19 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <LinearLayout
         android:layout_below="@+id/toolbar"
+        android:id="@+id/layoutDots"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="25dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,69 +82,72 @@
                     android:id="@+id/main_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="100sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="100sp" />
 
                 <TextView
                     android:id="@+id/main_w_phrase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/main_max_min_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
 
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tx_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="10sp"
                 android:layout_below="@+id/Main_linear_temp"
+                android:layout_marginTop="10dp"
                 android:text="Updated 30 minutes ago"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="12dp"
-                android:background="@color/gray"
                 android:layout_below="@+id/tx_update"
-                />
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/gray" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/Recycle_ViewList_hours"
-                android:scrollbars="vertical"
-                android:layout_centerHorizontal="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view">
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true"
+                android:scrollbars="vertical">
 
             </android.support.v7.widget.RecyclerView>
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/gray"
                 android:layout_below="@+id/Recycle_ViewList_hours"
-                />
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/Recycle_ViewList_days"
-                android:scrollbars="horizontal"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view2">
+                android:layout_below="@+id/view2"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scrollbars="horizontal">
 
             </android.support.v7.widget.RecyclerView>
 
