@@ -1,5 +1,6 @@
 package training.weatherapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,5 +85,12 @@ public class ActivityAddCity extends AppCompatActivity {
 
         }
 
+
     }
+
+    public void back_img_click(View v) {
+        Intent i = new Intent(ActivityAddCity.this, ActivityCities.class);
+        startActivity(i);
+    }
+
 }

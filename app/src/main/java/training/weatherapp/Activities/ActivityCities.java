@@ -64,14 +64,12 @@ public class ActivityCities extends AppCompatActivity {
         Intent i = new Intent(ActivityCities.this,ActivityWeatherWidget.class);
         startActivity(i);
     }
-    public void back_img_click(View v) {
-        this.setContentView(R.layout.activity_cities);
-    }
 
     public void back_img_click2(View v) {
-        Intent i = new Intent(ActivityCities.this,ActivityMain.class);
+        Intent i = new Intent(ActivityCities.this, ActivityMain.class);
         startActivity(i);
     }
+
 
     @Override
     public void onBackPressed() {
