@@ -103,7 +103,7 @@ public class ActivityMain extends AppCompatActivity {
             prefManager.setFirstTimeLaunch(false);
 
             // set default settings
-            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true"));
+            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true", "English", "C"));
             db.cities_Dao().insertAll(new Cities_Model("London", "55489"));
 
         }
@@ -294,7 +294,7 @@ public class ActivityMain extends AppCompatActivity {
                     try {
                         String city = cities_model.getCities_keys();
                         String lang = db.settings_Dao().getAll().get(0).getLang();
-                        String metric = db.settings_Dao().getAll().get(0).getMetric();
+                        String metric = db.settings_Dao().getAll().get(0).getMetric1();
 
                         String url = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
                         StringRequest req = new StringRequest(url, new Response.Listener<String>() {
@@ -355,7 +355,7 @@ public class ActivityMain extends AppCompatActivity {
 
                         String city = cities_model.getCities_keys();
                         String lang = db.settings_Dao().getAll().get(0).getLang();
-                        String metric = db.settings_Dao().getAll().get(0).getMetric();
+                        String metric = db.settings_Dao().getAll().get(0).getMetric1();
 
                         String url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
                         StringRequest req = new StringRequest(url, new Response.Listener<String>() {

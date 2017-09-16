@@ -11,6 +11,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,8 +22,12 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import training.weatherapp.PrefManager;
 import training.weatherapp.R;
+import training.weatherapp.RoomDatabase.Models.Settings_Model;
 
+import static training.weatherapp.Activities.ActivityMain.db;
+import static training.weatherapp.Activities.ActivityMain.main_max_min_temp;
 import static training.weatherapp.Activities.ActivityMain.rootView;
 
 
@@ -36,6 +41,8 @@ public class ActivitySettings extends AppCompatActivity {
     ImageView icon1, icon2, icon3;
     Toolbar toolbar;
     LinearLayout sett_layout;
+    String language, metric, lang;
+
 
     public static boolean isRTL(View view) {
         if (view == null)
@@ -52,15 +59,38 @@ public class ActivitySettings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
 
-        Temp_txt_sett = (TextView) findViewById(R.id.temp_txtview_sett);
-        Lang_txt_sett = (TextView) findViewById(R.id.lan_txtview_sett);
-
         icon1 = (ImageView) findViewById(R.id.icon1);
         icon2 = (ImageView) findViewById(R.id.icon2);
         icon3 = (ImageView) findViewById(R.id.icon3);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         sett_layout = (LinearLayout) findViewById(R.id.sett_layout);
+
+
+        Temp_txt_sett = (TextView) findViewById(R.id.temp_txtview_sett);
+        Lang_txt_sett = (TextView) findViewById(R.id.lan_txtview_sett);
+
+        lang = db.settings_Dao().getAll().get(0).getLang();
+        language = db.settings_Dao().getAll().get(0).getLanguage();
+        metric = db.settings_Dao().getAll().get(0).getMetric2();
+
+        if (language.equals("Arabic")) {
+            Lang_txt_sett.setText(R.string.Arabic);
+        } else {
+            Lang_txt_sett.setText(R.string.English);
+        }
+
+        switch (metric) {
+            case "Auto (F)":
+                Temp_txt_sett.setText(R.string.auto);
+                break;
+            case " F ":
+                Temp_txt_sett.setText(R.string.F);
+                break;
+            case " C ":
+                Temp_txt_sett.setText(R.string.C);
+                break;
+        }
 
         // Temp custom dialog
         T_dialog = new Dialog(this, R.style.FullHeightDialog);
@@ -87,18 +117,26 @@ public class ActivitySettings extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 if (checkedId == R.id.rd_auto) {
-                    Temp_txt_sett.setText("Auto(ْ F)");
-                    T_dialog.dismiss();
+                    Temp_txt_sett.setText(R.string.auto);
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), "Auto (F)"));
+
                 } else if (checkedId == R.id.rd_c) {
-                    Temp_txt_sett.setText("ْ c");
-                    T_dialog.dismiss();
+                    Temp_txt_sett.setText(R.string.C);
+
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "true", db.settings_Dao().getAll().get(0).getLanguage(), " C "));
+
 
                 } else if (checkedId == R.id.rd_f) {
-                    Temp_txt_sett.setText("ْ F");
-                    T_dialog.dismiss();
-
+                    Temp_txt_sett.setText(R.string.F);
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), " F "));
+                    Log.d("langn", db.settings_Dao().getAll().get(0).getLang() + db.settings_Dao().getAll().get(0).getMetric1() + db.settings_Dao().getAll().get(0).getMetric2());
 
                 }
+                T_dialog.dismiss();
+                Intent intent = new Intent(ActivitySettings.this, ActivityMain.class);
+                startActivity(intent);
+
+
             }
 
         });
@@ -116,38 +154,28 @@ public class ActivitySettings extends AppCompatActivity {
         Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                L_dialog.dismiss();
+
+                if (Rd_Eng.isChecked()) {
+                    lang = "en-us";
+                    language = "English";
+                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2()));
+                    setLocal(lang);
+                    L_dialog.dismiss();
+                } else if (Rd_Ara.isChecked()) {
+                    lang = "ar";
+                    language = "Arabic";
+                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2()));
+                    setLocal(lang);
+                    L_dialog.dismiss();
+                }
             }
         });
 
         L_radioGroup = L_dialog.findViewById(R.id.Lang_RadioGroup);
 
-        Rd_Eng.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setLocal("en");
-                Lang_txt_sett.setText("English");
-                L_dialog.dismiss();
-            }
-        });
-        Rd_Ara.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setLocal("ar");
-                Lang_txt_sett.setText("Arabic");
-                L_dialog.dismiss();
 
-            }
-        });
+        update_design();
 
-
-        if (!isRTL(rootView)) {
-            icon1.setRotation(180);
-            icon2.setRotation(180);
-            icon3.setRotation(180);
-            sett_layout.setRotation(360);
-
-        }
     }
 
     private void setLocal(String language) {
@@ -163,39 +191,16 @@ public class ActivitySettings extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void changeLang(String lang) {
-//        if (lang.equalsIgnoreCase(""))
-//            return;
-//        Locale myLocale = new Locale(lang);
-//        saveLocale(lang);
-//        Locale.setDefault(myLocale);
-//        android.content.res.Configuration config = new android.content.res.Configuration();
-//        config.locale = myLocale;
-//        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//    }
-//
-//
-//    // get current language
-//    public void loadLocale() {
-//        String langPref = "Language";
-//        SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-//        String language = prefs.getString(langPref, "ara");
-//        changeLang(language);
-//    }
-//
-//    // save changed language
-//    private void saveLocale(String lang) {
-//        {
-//            String langPref = "Language";
-//            SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.putString(langPref, lang);
-//            editor.commit();
-//        }
-//
-//
-//    }
-//
+    private void update_design() {
+
+        if (!isRTL(rootView)) {
+            icon1.setRotation(180);
+            icon2.setRotation(180);
+            icon3.setRotation(180);
+            sett_layout.setRotation(360);
+
+        }
+    }
 
     public void temp_units(View v) {
         T_dialog.show();

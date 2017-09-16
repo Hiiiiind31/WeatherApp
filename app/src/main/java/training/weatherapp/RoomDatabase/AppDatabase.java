@@ -17,7 +17,7 @@ import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 /**
  * Created by hindahmed on 23/08/17.
  */
-@Database(entities = {Weather_hours_model.class,Weather_days_model.class, Settings_Model.class, Cities_Model.class}, version = 2,exportSchema = false)
+@Database(entities = {Weather_hours_model.class, Weather_days_model.class, Settings_Model.class, Cities_Model.class}, version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
