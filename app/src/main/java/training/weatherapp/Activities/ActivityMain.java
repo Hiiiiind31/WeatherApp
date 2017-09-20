@@ -55,6 +55,7 @@ import training.weatherapp.Volley.Model_5Days.Model5days;
 
 import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dots;
 import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dotsLayout;
+import static training.weatherapp.R.id.all;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -84,10 +85,9 @@ public class ActivityMain extends AppCompatActivity {
     static Boolean isInternet;
     PrefManager prefManager;
 
-    public static TextView main_temp;
-    public static TextView main_max_min_temp;
-    public static TextView main_w_phrase;
-
+    static TextView main_temp;
+    static TextView main_max_min_temp;
+    static TextView main_w_phrase;
     static RequestQueue queue;
 
 
@@ -125,11 +125,6 @@ public class ActivityMain extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        ///////////
-        main_temp = (TextView) findViewById(R.id.main_temp);
-        main_max_min_temp = (TextView) findViewById(R.id.main_max_min_temp);
-        main_w_phrase = (TextView) findViewById(R.id.main_w_phrase);
 
 
         /////////////////////////////////////////////////////////
@@ -252,7 +247,7 @@ public class ActivityMain extends AppCompatActivity {
             for (int i = 0; i < dots.length; i++) {
                 dots[i] = new TextView(getContext());
                 dots[i].setText(Html.fromHtml("&#8226;"));
-                dots[i].setTextSize(30);
+                dots[i].setTextSize(25);
                 dots[i].setTextColor(Color.GRAY);
                 dotsLayout.addView(dots[i]);
             }
@@ -262,6 +257,10 @@ public class ActivityMain extends AppCompatActivity {
 
 
         private void Recycle_design(View rootView) {
+
+            main_temp = rootView.findViewById(R.id.main_temp);
+            main_max_min_temp = rootView.findViewById(R.id.main_max_min_temp);
+            main_w_phrase = rootView.findViewById(R.id.main_w_phrase);
 
             // set up the  Hours RecyclerListView
             recyclerView = rootView.findViewById(R.id.Recycle_ViewList_hours);
@@ -304,6 +303,10 @@ public class ActivityMain extends AppCompatActivity {
                 offlineModel12Hourses.add(offline_model_12hours);
 
             }
+            // main text in main activity
+            main_temp.setText(db.WHours_Doa().getAll().get(0).getTemp());
+            main_w_phrase.setText(db.WHours_Doa().getAll().get(0).getIconPhrase());
+
             Offline_12H_Adapter offline_12H_adapter = new Offline_12H_Adapter(getContext(), offlineModel12Hourses);
             recyclerView.setAdapter(offline_12H_adapter);
 
@@ -414,7 +417,13 @@ public class ActivityMain extends AppCompatActivity {
                 String value = String.valueOf(response[i].getTemperature().getValue().intValue());
                 String iconPhrase = response[i].getIconPhrase();
                 String weatherIcon = String.valueOf(response[i].getWeatherIcon());
+
                 db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, weatherIcon, iconPhrase));
+
+                // main text in main activity
+                main_temp.setText(String.valueOf(response[0].getTemperature().getValue().intValue()) + "");
+                main_w_phrase.setText(response[0].getIconPhrase() + "");
+
             }
 
         }
@@ -480,7 +489,14 @@ public class ActivityMain extends AppCompatActivity {
                 String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
                 String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
 
+                // Main Maxtemp , Mintemp ;
+
+                String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
+                String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
+                main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
+                Log.e("hh", Max_temp + "//" + Min_temp);
                 db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
+
             }
 
         }

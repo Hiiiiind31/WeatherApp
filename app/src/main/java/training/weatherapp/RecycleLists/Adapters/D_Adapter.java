@@ -17,7 +17,6 @@ import training.weatherapp.R;
 ;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
-import static java.lang.Long.parseLong;
 
 /**
  * Created by hindahmed on 16/08/17.
@@ -55,6 +54,8 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
 
         holder.tx_time.setText(java_date);
         holder.tx_temp_mm.setText(m_items.getDailyForecasts().get(position).getTemperature().getMaximum().getValue().intValue()+" ْ"+"/"+m_items.getDailyForecasts().get(position).getTemperature().getMinimum().getValue().intValue()+" ْ");
+
+
     }
 
     @Override

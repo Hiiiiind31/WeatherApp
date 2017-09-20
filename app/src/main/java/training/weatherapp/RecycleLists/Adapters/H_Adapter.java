@@ -50,6 +50,7 @@ public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
+
         holder.tx_hour.setText(java_date);
         holder.tx_temp.setText(model12hour.getTemperature().getValue().intValue()+"ْ ");
 
