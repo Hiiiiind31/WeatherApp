@@ -49,6 +49,10 @@ public class ActivityAddCity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void clear_text(View v) {
+        search_city.setText("");
 
     }
 
