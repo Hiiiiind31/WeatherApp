@@ -57,16 +57,16 @@
 
         <EditText
             android:id="@+id/Search_city_id"
-            android:layout_width="289dp"
+            android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="7dp"
-            android:layout_weight="0.21"
+            android:layout_weight="0.85"
             android:inputType="textAutoCorrect|textAutoComplete"
             android:onClick="get_city"
-            android:padding="10dp"
+            android:padding="5dp"
             android:textAlignment="inherit"
             android:textAllCaps="false"
             android:textColorLink="@android:color/transparent"
@@ -74,8 +74,10 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="6dp"
+            android:layout_weight="0.15"
             android:onClick="clear_text"
             android:padding="10dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />

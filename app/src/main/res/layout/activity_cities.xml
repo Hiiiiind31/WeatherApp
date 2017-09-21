@@ -29,10 +29,11 @@
                 android:tint="@android:color/white" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="10dp"
+                android:layout_marginTop="3dp"
                 android:text="@string/Manage_cities"
+                android:textAlignment="center"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

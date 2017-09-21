@@ -272,8 +272,8 @@ public class ActivityMain extends AppCompatActivity {
 
 
             if (isInternet) {
-                Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-                Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                //  Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                // Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
             } else {
 
@@ -419,13 +419,10 @@ public class ActivityMain extends AppCompatActivity {
                 String weatherIcon = String.valueOf(response[i].getWeatherIcon());
 
                 db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, weatherIcon, iconPhrase));
-
-                // main text in main activity
-                main_temp.setText(String.valueOf(response[0].getTemperature().getValue().intValue()) + "");
-                main_w_phrase.setText(response[0].getIconPhrase() + "");
-
             }
-
+            // main text in main activity
+            main_temp.setText(String.valueOf(response[0].getTemperature().getValue().intValue()) + "");
+            main_w_phrase.setText(response[0].getIconPhrase() + "");
         }
 
 
@@ -489,15 +486,16 @@ public class ActivityMain extends AppCompatActivity {
                 String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
                 String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
 
-                // Main Maxtemp , Mintemp ;
-
-                String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
-                String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
-                main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
-                Log.e("hh", Max_temp + "//" + Min_temp);
                 db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
 
             }
+
+            // Main Maxtemp , Mintemp ;
+
+            String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
+            String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
+            main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
+            Log.e("hh", Max_temp + "//" + Min_temp);
 
         }
 

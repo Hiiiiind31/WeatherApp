@@ -152,7 +152,9 @@
             android:layout_height="2dp"
             android:layout_below="@+id/toolbar"
             android:background="@color/gray" />
+
         <Switch
+            android:id="@+id/Switch_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
@@ -182,10 +184,12 @@
                 android:padding="16dp"
                 android:scrollbars="vertical">
             </android.support.v7.widget.RecyclerView>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:onClick="add_city"
                 android:paddingBottom="16dp"
                 android:paddingLeft="16dp"
                 android:text="@string/Add_city" />

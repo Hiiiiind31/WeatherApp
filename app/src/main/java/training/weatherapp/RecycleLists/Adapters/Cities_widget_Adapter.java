@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import training.weatherapp.R;
+import training.weatherapp.RoomDatabase.Models.Cities_Model;
 
 /**
  * Created by hindahmed on 22/08/17.
@@ -16,9 +19,9 @@ import training.weatherapp.R;
 public class Cities_widget_Adapter extends RecyclerView.Adapter<Cities_widget_Adapter.ViewHolder> {
 
     private Context context ;
-    private String[] m_items;
+    private List<Cities_Model> m_items;
 
-    public Cities_widget_Adapter(Context context, String[] m_items) {
+    public Cities_widget_Adapter(Context context, List<Cities_Model> m_items) {
         this.context = context;
         this.m_items = m_items;
     }
@@ -31,13 +34,13 @@ public class Cities_widget_Adapter extends RecyclerView.Adapter<Cities_widget_Ad
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tx_city.setText(m_items[position]);
+        holder.tx_city.setText(m_items.get(position).getCites());
 
     }
 
     @Override
     public int getItemCount() {
-        return m_items.length;
+        return m_items.size();
     }
 
 

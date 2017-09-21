@@ -2,6 +2,7 @@ package training.weatherapp.RoomDatabase.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.List;
@@ -28,13 +29,25 @@ public class Settings_Model {
     @ColumnInfo(name = "metric2")
     private String metric2;
 
+    @ColumnInfo(name = "current")
+    private boolean current_location;
 
-    public Settings_Model(int id, String lang, String metric1, String language, String metric2) {
+
+    public Settings_Model(int id, String lang, String metric1, String language, String metric2, boolean current_location) {
         this.id = id;
         this.lang = lang;
         this.metric1 = metric1;
         this.language = language;
         this.metric2 = metric2;
+        this.current_location = current_location;
+    }
+
+    public boolean isCurrent_location() {
+        return current_location;
+    }
+
+    public void setCurrent_location(boolean current_location) {
+        this.current_location = current_location;
     }
 
     public int getId() {
