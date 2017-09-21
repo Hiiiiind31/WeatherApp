@@ -25,21 +25,20 @@ public class Weather_hours_model {
     private String temp ;
 
     @ColumnInfo(name = "icon")
-    private String Icon ;
+    private int Icon;
 
     @ColumnInfo(name = "icon_phrase")
     private String IconPhrase;
 
-
     public Weather_hours_model() {
     }
 
-    public Weather_hours_model(String city_key, String date, String temp, String icon, String iconPhrase) {
+    public Weather_hours_model(String city_key, String date, String temp, int icon, String iconPhrase) {
         this.city_key = city_key;
         this.Date = date;
         this.temp = temp;
         this.Icon = icon;
-       this.IconPhrase = iconPhrase;
+        this.IconPhrase = iconPhrase;
     }
 
     public String getCity_key() {
@@ -74,11 +73,11 @@ public class Weather_hours_model {
         this.temp = temp;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return Icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         Icon = icon;
     }
 

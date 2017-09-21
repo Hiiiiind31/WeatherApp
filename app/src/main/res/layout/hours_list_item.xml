@@ -11,14 +11,13 @@
         android:padding="6dp"
         android:text="10 am"
         android:textAlignment="center" />
+
     <ImageView
         android:id="@+id/img_weather"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
         android:padding="6dp"
-        android:tint="@android:color/white"
-        android:src="@drawable/ic_brightness_7_black_24dp"/>
+        android:textAlignment="center" />
     <TextView
         android:id="@+id/tx_temp"
         android:layout_width="match_parent"

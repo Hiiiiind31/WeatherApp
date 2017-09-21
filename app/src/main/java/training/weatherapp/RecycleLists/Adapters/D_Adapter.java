@@ -17,6 +17,8 @@ import training.weatherapp.R;
 ;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.select_icon;
+
 
 /**
  * Created by hindahmed on 16/08/17.
@@ -52,6 +54,9 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
+        int icon = select_icon(m_items.getDailyForecasts().get(position).getDay().getIcon());
+
+        holder.img_weather2.setImageResource(icon);
         holder.tx_time.setText(java_date);
         holder.tx_temp_mm.setText(m_items.getDailyForecasts().get(position).getTemperature().getMaximum().getValue().intValue()+" ْ"+"/"+m_items.getDailyForecasts().get(position).getTemperature().getMinimum().getValue().intValue()+" ْ");
 

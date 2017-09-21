@@ -75,6 +75,7 @@ public class ActivitySettings extends AppCompatActivity {
         metric = db.settings_Dao().getAll().get(0).getMetric2();
 
         Temp_txt_sett.setText(metric);
+
         if (language.equals("Arabic")) {
             Lang_txt_sett.setText(R.string.Arabic);
         } else {

@@ -31,11 +31,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import training.weatherapp.PrefManager;
 import training.weatherapp.R;
@@ -52,10 +49,6 @@ import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
 import training.weatherapp.Volley.Model_12Hours.Model12hour;
 import training.weatherapp.Volley.Model_5Days.Model5days;
-
-import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dots;
-import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.dotsLayout;
-import static training.weatherapp.R.id.all;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -272,8 +265,8 @@ public class ActivityMain extends AppCompatActivity {
 
 
             if (isInternet) {
-                //  Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-                // Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
             } else {
 
@@ -287,7 +280,8 @@ public class ActivityMain extends AppCompatActivity {
         private void Get_offline_data_of_12_Hours_from_db(Cities_Model cities_model) {
 
 
-            String Temp, Date, Icon, Icon_phrase;
+            String Temp, Date, Icon_phrase;
+            int Icon;
             ArrayList<Offline_Model_12Hours> offlineModel12Hourses = new ArrayList<>();
 
             for (int i = 0; i < 12; i++) {
@@ -316,7 +310,8 @@ public class ActivityMain extends AppCompatActivity {
         private void Get_offline_data_of_5_days_from_db(Cities_Model cities_model) {
 
 
-            String Max_temp, Min_temp, Date, Icon;
+            String Max_temp, Min_temp, Date;
+            int Icon;
             ArrayList<Offline_model_5Days> offlineModel5Dayses = new ArrayList<>();
 
 
@@ -416,9 +411,9 @@ public class ActivityMain extends AppCompatActivity {
                 String epochDateTime = String.valueOf(response[i].getEpochDateTime().intValue());
                 String value = String.valueOf(response[i].getTemperature().getValue().intValue());
                 String iconPhrase = response[i].getIconPhrase();
-                String weatherIcon = String.valueOf(response[i].getWeatherIcon());
-
-                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, weatherIcon, iconPhrase));
+                int weatherIcon = response[i].getWeatherIcon();
+                int icon = select_icon(weatherIcon);
+                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, icon, iconPhrase));
             }
             // main text in main activity
             main_temp.setText(String.valueOf(response[0].getTemperature().getValue().intValue()) + "");
@@ -483,10 +478,11 @@ public class ActivityMain extends AppCompatActivity {
                 String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
                 String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
                 String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
-                String weatherIcon = String.valueOf(response.getDailyForecasts().get(i).getNight().getIcon());
+                int weatherIcon = response.getDailyForecasts().get(i).getNight().getIcon();
+                int icon = select_icon(weatherIcon);
                 String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
 
-                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, weatherIcon, iconPhrase));
+                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, icon, iconPhrase));
 
             }
 
@@ -497,6 +493,135 @@ public class ActivityMain extends AppCompatActivity {
             main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
             Log.e("hh", Max_temp + "//" + Min_temp);
 
+        }
+
+        public static int select_icon(int weatherIcon) {
+
+            int Icon;
+
+            switch (weatherIcon) {
+                case 1:
+                    Icon = R.drawable.img_1;
+                    break;
+                case 2:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 3:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 4:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 5:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 6:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 7:
+                    Icon = R.drawable.img_7_8_11;
+
+                    break;
+                case 8:
+                    Icon = R.drawable.img_7_8_11;
+                    break;
+                case 11:
+                    Icon = R.drawable.img_7_8_11;
+
+                    break;
+                case 12:
+                    Icon = R.drawable.img_12_15_18;
+                    break;
+                case 13:
+                    Icon = R.drawable.img_13_14_16_17;
+                    break;
+                case 14:
+                    Icon = R.drawable.img_13_14_16_17;
+                    break;
+                case 15:
+                    Icon = R.drawable.img_12_15_18;
+                    break;
+                case 16:
+                    Icon = R.drawable.img_13_14_16_17;
+                    break;
+                case 17:
+                    Icon = R.drawable.img_13_14_16_17;
+                    break;
+                case 18:
+                    Icon = R.drawable.img_12_15_18;
+                    break;
+
+                case 20:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 21:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+
+                case 23:
+                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                    break;
+                case 24:
+                    Icon = R.drawable.img_24;
+                    break;
+                case 25:
+                    Icon = R.drawable.img_25_26_29;
+                    break;
+                case 26:
+                    Icon = R.drawable.img_25_26_29;
+                    break;
+                case 29:
+                    Icon = R.drawable.img_25_26_29;
+                    break;
+                case 30:
+                    Icon = R.drawable.img_30;
+
+                    break;
+                case 32:
+                    Icon = R.drawable.img_32;
+
+                    break;
+                case 33:
+                    Icon = R.drawable.img_33;
+                    break;
+                case 34:
+                    Icon = R.drawable.img_34_35_36_37;
+                    break;
+                case 35:
+                    Icon = R.drawable.img_34_35_36_37;
+                    break;
+                case 36:
+                    Icon = R.drawable.img_34_35_36_37;
+                    break;
+                case 37:
+                    Icon = R.drawable.img_34_35_36_37;
+                    break;
+                case 38:
+                    Icon = R.drawable.img_38_44_43;
+                    break;
+                case 39:
+                    Icon = R.drawable.img_39_40_41_42;
+                    break;
+                case 40:
+                    Icon = R.drawable.img_39_40_41_42;
+                    break;
+                case 41:
+                    Icon = R.drawable.img_39_40_41_42;
+                    break;
+                case 42:
+                    Icon = R.drawable.img_39_40_41_42;
+                    break;
+                case 43:
+                    Icon = R.drawable.img_38_44_43;
+                    break;
+                case 44:
+                    Icon = R.drawable.img_38_44_43;
+                    break;
+                default:
+                    Icon = R.drawable.snowy5;
+                    break;
+            }
+            return Icon;
         }
 
 
@@ -529,10 +654,6 @@ public class ActivityMain extends AppCompatActivity {
         public int getCount() {
             return size_of_list;
         }
-
-
-
-
 
     }
 }

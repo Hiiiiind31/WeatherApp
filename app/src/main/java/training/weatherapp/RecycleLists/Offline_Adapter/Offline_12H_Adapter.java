@@ -20,6 +20,8 @@ import training.weatherapp.RecycleLists.Adapters.H_Adapter;
 import training.weatherapp.RecycleLists.offline_Models.Offline_Model_12Hours;
 import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
 
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.select_icon;
+
 /**
  * Created by hindahmed on 12/09/17.
  */
@@ -54,7 +56,8 @@ public class Offline_12H_Adapter extends  RecyclerView.Adapter<Offline_12H_Adapt
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
-
+        int icon = select_icon(m_items.get(position).getImage());
+        holder.img_weather.setImageResource(icon);
         holder.tx_hour.setText(java_date);
         holder.tx_temp.setText(m_items.get(position).getTemp()+"ْ ");
     }

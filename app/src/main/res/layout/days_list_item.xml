@@ -19,15 +19,14 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:text="Tomorrow ,16Aug" />
-    <ImageView
-        android:id="@+id/img_weather2"
-        android:layout_width="79dp"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:tint="@android:color/white"
-        android:src="@drawable/ic_brightness_7_black_24dp" />
+
+        <ImageView
+            android:id="@+id/img_weather2"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textAlignment="center" />
     <TextView
         android:id="@+id/tx_temp_MM"
         android:layout_width="108dp"

@@ -7,11 +7,11 @@ package training.weatherapp.RecycleLists.offline_Models;
 public class Offline_Model_12Hours {
 
     private String Time;
-    private String Image;
+    private int Image;
     private String Temp;
     private String weather_phrase ;
 
-    public Offline_Model_12Hours(String time, String image, String temp, String weather_phrase) {
+    public Offline_Model_12Hours(String time, int image, String temp, String weather_phrase) {
         Time = time;
         Image = image;
         Temp = temp;
@@ -26,11 +26,11 @@ public class Offline_Model_12Hours {
         Time = time;
     }
 
-    public String getImage() {
+    public int getImage() {
         return Image;
     }
 
-    public void setImage(String image) {
+    public void setImage(int image) {
         Image = image;
     }
 

@@ -8,11 +8,11 @@ public class Offline_model_5Days {
 
 
     private String d_Date;
-    private String d_Image;
+    private int d_Image;
     private String d_Max_Temp;
     private String d_Min_Temp;
 
-    public Offline_model_5Days(String d_Date, String d_Image, String d_Max_Temp, String d_Min_Temp) {
+    public Offline_model_5Days(String d_Date, int d_Image, String d_Max_Temp, String d_Min_Temp) {
         this.d_Date = d_Date;
         this.d_Image = d_Image;
         this.d_Max_Temp = d_Max_Temp;
@@ -27,11 +27,11 @@ public class Offline_model_5Days {
         this.d_Date = d_Date;
     }
 
-    public String getD_Image() {
+    public int getD_Image() {
         return d_Image;
     }
 
-    public void setD_Image(String d_Image) {
+    public void setD_Image(int d_Image) {
         this.d_Image = d_Image;
     }
 

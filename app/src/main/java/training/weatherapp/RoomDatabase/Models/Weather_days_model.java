@@ -29,16 +29,15 @@ public class Weather_days_model {
     private String Min_temp;
 
     @ColumnInfo(name = "icon")
-    private String Icon;
+    private int Icon;
 
     @ColumnInfo(name = "icon_phrase")
     private String IconPhrase;
 
-
     public Weather_days_model() {
     }
 
-    public Weather_days_model( String city_key, String date, String max_temp, String min_temp, String icon, String iconPhrase) {
+    public Weather_days_model(String city_key, String date, String max_temp, String min_temp, int icon, String iconPhrase) {
         this.city_key = city_key;
         this.Date = date;
         this.Max_temp = max_temp;
@@ -87,11 +86,11 @@ public class Weather_days_model {
         Min_temp = min_temp;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return Icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         Icon = icon;
     }
 

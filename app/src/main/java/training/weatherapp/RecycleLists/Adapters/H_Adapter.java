@@ -2,7 +2,6 @@ package training.weatherapp.RecycleLists.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ import java.util.TimeZone;
 
 import training.weatherapp.R;
 import training.weatherapp.Volley.Model_12Hours.Model12hour;
+
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.select_icon;
 
 
 /**
@@ -49,8 +50,8 @@ public class H_Adapter extends RecyclerView.Adapter<H_Adapter.ViewHolder> {
         SimpleDateFormat jdf = new SimpleDateFormat("hh:mm a");
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
-
-
+        int icon = select_icon(model12hour.getWeatherIcon());
+        holder.img_weather.setImageResource(icon);
         holder.tx_hour.setText(java_date);
         holder.tx_temp.setText(model12hour.getTemperature().getValue().intValue()+"ْ ");
 
