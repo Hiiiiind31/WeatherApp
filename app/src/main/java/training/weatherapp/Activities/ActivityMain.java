@@ -108,7 +108,7 @@ public class ActivityMain extends AppCompatActivity {
             prefManager.setFirstTimeLaunch(false);
 
             // set default settings
-            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true", "English", "C"));
+            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true", "English", "C", false));
             db.cities_Dao().insertAll(new Cities_Model("London", "55489"));
         }
 

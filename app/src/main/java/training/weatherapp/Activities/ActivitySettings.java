@@ -74,6 +74,7 @@ public class ActivitySettings extends AppCompatActivity {
         language = db.settings_Dao().getAll().get(0).getLanguage();
         metric = db.settings_Dao().getAll().get(0).getMetric2();
 
+        Temp_txt_sett.setText(metric);
         if (language.equals("Arabic")) {
             Lang_txt_sett.setText(R.string.Arabic);
         } else {
@@ -118,18 +119,17 @@ public class ActivitySettings extends AppCompatActivity {
 
                 if (checkedId == R.id.rd_auto) {
                     Temp_txt_sett.setText(R.string.auto);
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), "Auto (F)"));
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), "Auto (F)", db.settings_Dao().getAll().get(0).isCurrent_location()));
 
                 } else if (checkedId == R.id.rd_c) {
                     Temp_txt_sett.setText(R.string.C);
 
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "true", db.settings_Dao().getAll().get(0).getLanguage(), " C "));
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "true", db.settings_Dao().getAll().get(0).getLanguage(), " C ", db.settings_Dao().getAll().get(0).isCurrent_location()));
 
 
                 } else if (checkedId == R.id.rd_f) {
                     Temp_txt_sett.setText(R.string.F);
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), " F "));
-                    Log.d("langn", db.settings_Dao().getAll().get(0).getLang() + db.settings_Dao().getAll().get(0).getMetric1() + db.settings_Dao().getAll().get(0).getMetric2());
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), " F ", db.settings_Dao().getAll().get(0).isCurrent_location()));
 
                 }
                 T_dialog.dismiss();
@@ -158,13 +158,14 @@ public class ActivitySettings extends AppCompatActivity {
                 if (Rd_Eng.isChecked()) {
                     lang = "en-us";
                     language = "English";
-                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2()));
+                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2(), db.settings_Dao().getAll().get(0).isCurrent_location()));
+
                     setLocal(lang);
                     L_dialog.dismiss();
                 } else if (Rd_Ara.isChecked()) {
                     lang = "ar";
                     language = "Arabic";
-                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2()));
+                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2(), db.settings_Dao().getAll().get(0).isCurrent_location()));
                     setLocal(lang);
                     L_dialog.dismiss();
                 }
