@@ -2,6 +2,7 @@ package training.weatherapp.RecycleLists.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -17,6 +19,7 @@ import training.weatherapp.R;
 ;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
+import static android.R.attr.mode;
 import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.select_icon;
 
 
@@ -29,12 +32,15 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
 
     private Context context;
     private Model5days m_items;
+    private int[] mtimes;
 
 
-    public D_Adapter(Context context, Model5days m_items) {
+    public D_Adapter(Context context, Model5days m_items, int[] mtimes) {
         this.context = context;
         this.m_items = m_items;
+        this.mtimes = mtimes;
     }
+
 
     @Override
     public D_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,27 +51,30 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(D_Adapter.ViewHolder holder, int position) {
 
-        Integer epochDate = m_items.getDailyForecasts().get(position).getEpochDate();
+
+        Integer epochDate = m_items.getList().get(mtimes[position]).getDt();
 
         //convert seconds to milliseconds
-        Date date = new Date(epochDate*1000L);
+        Date date = new Date(epochDate * 1000L);
         // format of the date
         SimpleDateFormat jdf = new SimpleDateFormat("EE, MMM d");
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
-        int icon = select_icon(m_items.getDailyForecasts().get(position).getDay().getIcon());
-
+        int icon = select_icon(m_items.getList().get(mtimes[position]).getWeather().get(0).getIcon());
         holder.img_weather2.setImageResource(icon);
         holder.tx_time.setText(java_date);
-        holder.tx_temp_mm.setText(m_items.getDailyForecasts().get(position).getTemperature().getMaximum().getValue().intValue()+" ْ"+"/"+m_items.getDailyForecasts().get(position).getTemperature().getMinimum().getValue().intValue()+" ْ");
+        holder.tx_temp_mm.setText(m_items.getList().get(mtimes[position]).getMain().getTemp().intValue() + "");
+        // holder.tx_temp_mm.setText(m_items.getList().get(position).getMain().getTempMax()+" ْ"+"/"+m_items.getList().get(position).getMain().getTempMin()+" ْ");
+
+        // }
 
 
     }
 
     @Override
     public int getItemCount() {
-        return m_items.getDailyForecasts().size();
+        return mtimes.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

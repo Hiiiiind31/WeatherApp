@@ -38,16 +38,13 @@ import training.weatherapp.PrefManager;
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.Adapters.H_Adapter;
-import training.weatherapp.RecycleLists.Offline_Adapter.Offline_12H_Adapter;
 import training.weatherapp.RecycleLists.Offline_Adapter.Offline_5D_Adapter_;
-import training.weatherapp.RecycleLists.offline_Models.Offline_Model_12Hours;
 import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
 import training.weatherapp.RoomDatabase.AppDatabase;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
 import training.weatherapp.RoomDatabase.Models.Settings_Model;
 import training.weatherapp.RoomDatabase.Models.Weather_days_model;
 import training.weatherapp.RoomDatabase.Models.Weather_hours_model;
-import training.weatherapp.Volley.Model_12Hours.Model12hour;
 import training.weatherapp.Volley.Model_5Days.Model5days;
 
 public class ActivityMain extends AppCompatActivity {
@@ -101,8 +98,8 @@ public class ActivityMain extends AppCompatActivity {
             prefManager.setFirstTimeLaunch(false);
 
             // set default settings
-            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "true", "English", "C", false));
-            db.cities_Dao().insertAll(new Cities_Model("London", "55489"));
+            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "metric", "English", "C", false));
+            db.cities_Dao().insertAll(new Cities_Model("London ,us", "55489"));
         }
 
         ///////////////////////
@@ -172,8 +169,6 @@ public class ActivityMain extends AppCompatActivity {
 
         RecyclerView recyclerView;
         RecyclerView recyclerView2;
-        H_Adapter H_adapter;
-        D_Adapter D_adapter;
         static TextView[] dots;
         static LinearLayout dotsLayout;
 
@@ -255,7 +250,7 @@ public class ActivityMain extends AppCompatActivity {
             main_max_min_temp = rootView.findViewById(R.id.main_max_min_temp);
             main_w_phrase = rootView.findViewById(R.id.main_w_phrase);
 
-            // set up the  Hours RecyclerListView
+            // set up the Days RecyclerListView
             recyclerView = rootView.findViewById(R.id.Recycle_ViewList_hours);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -266,48 +261,17 @@ public class ActivityMain extends AppCompatActivity {
 
             if (isInternet) {
                 Get_data_of_5_days(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-                Get_data_of_12_Hours(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
 
             } else {
 
-                Get_offline_data_of_5_days_from_db(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
-                Get_offline_data_of_12_Hours_from_db(db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1));
+                Get_offline_data_of_5_days_from_db();
 
 
             }
         }
 
-        private void Get_offline_data_of_12_Hours_from_db(Cities_Model cities_model) {
 
-
-            String Temp, Date, Icon_phrase;
-            int Icon;
-            ArrayList<Offline_Model_12Hours> offlineModel12Hourses = new ArrayList<>();
-
-            for (int i = 0; i < 12; i++) {
-
-
-                Temp = db.WHours_Doa().getAll().get(i).getTemp();
-                Date = db.WHours_Doa().getAll().get(i).getDate();
-                Icon = db.WHours_Doa().getAll().get(i).getIcon();
-                Icon_phrase = db.WHours_Doa().getAll().get(i).getIconPhrase();
-
-                Offline_Model_12Hours offline_model_12hours = new Offline_Model_12Hours(Date, Icon, Temp, Icon_phrase);
-
-                offlineModel12Hourses.add(offline_model_12hours);
-
-            }
-            // main text in main activity
-            main_temp.setText(db.WHours_Doa().getAll().get(0).getTemp());
-            main_w_phrase.setText(db.WHours_Doa().getAll().get(0).getIconPhrase());
-
-            Offline_12H_Adapter offline_12H_adapter = new Offline_12H_Adapter(getContext(), offlineModel12Hourses);
-            recyclerView.setAdapter(offline_12H_adapter);
-
-        }
-
-
-        private void Get_offline_data_of_5_days_from_db(Cities_Model cities_model) {
+        private void Get_offline_data_of_5_days_from_db() {
 
 
             String Max_temp, Min_temp, Date;
@@ -358,67 +322,6 @@ public class ActivityMain extends AppCompatActivity {
 
         }
 
-        private void Get_data_of_12_Hours(final Cities_Model cities_model) {
-
-
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        String city = cities_model.getCities_keys();
-                        String lang = db.settings_Dao().getAll().get(0).getLang();
-                        String metric = db.settings_Dao().getAll().get(0).getMetric1();
-
-                        String url = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
-                        StringRequest req = new StringRequest(url, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-
-                                GsonBuilder builder = new GsonBuilder();
-                                Gson gson = builder.create();
-
-                                Model12hour[] model12hours = gson.fromJson(response, Model12hour[].class);
-                                H_Adapter H_adapter = new H_Adapter(getActivity(), model12hours);
-                                recyclerView.setAdapter(H_adapter);
-                                add_data_of_12hour_in_database(model12hours);
-
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("error", error.getMessage());
-
-                            }
-                        });
-
-                        queue.add(req);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }).start();
-
-        }
-
-        private void add_data_of_12hour_in_database(Model12hour[] response) {
-
-            String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
-
-            Log.d("city_key", db.cities_Dao().getAll().contains(city_keys) + "");
-
-
-            for (int i = 0; i < response.length; i++) {
-
-                String epochDateTime = String.valueOf(response[i].getEpochDateTime().intValue());
-                String value = String.valueOf(response[i].getTemperature().getValue().intValue());
-                String iconPhrase = response[i].getIconPhrase();
-                int weatherIcon = response[i].getWeatherIcon();
-                int icon = select_icon(weatherIcon);
-                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, value, icon, iconPhrase));
-            }
-            // main text in main activity
-            main_temp.setText(String.valueOf(response[0].getTemperature().getValue().intValue()) + "");
-            main_w_phrase.setText(response[0].getIconPhrase() + "");
-        }
 
 
         private void Get_data_of_5_days(final Cities_Model cities_model) {
@@ -428,11 +331,11 @@ public class ActivityMain extends AppCompatActivity {
                 public void run() {
                     try {
 
-                        String city = cities_model.getCities_keys();
+                        String city = cities_model.getCites();
                         String lang = db.settings_Dao().getAll().get(0).getLang();
                         String metric = db.settings_Dao().getAll().get(0).getMetric1();
 
-                        String url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" + city + "?apikey=jaWgzA5fF1XDAFBcAogi4TDGWFGh7phv&language=" + lang + "&metric=" + metric;
+                        String url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&mode=json&appid=fe6f25028b52c2bb6adda4031e39a6c1&units=" + metric;
                         StringRequest req = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -443,10 +346,18 @@ public class ActivityMain extends AppCompatActivity {
                                 Gson gson = builder.create();
 
                                 Model5days model5dayses = gson.fromJson(response, Model5days.class);
-                                D_Adapter D_adapter = new D_Adapter(getActivity(), model5dayses);
+                                int[] mtimes = {0, 8, 16, 24, 32};
+                                D_Adapter D_adapter = new D_Adapter(getActivity(), model5dayses, mtimes);
+                                H_Adapter H_adapter = new H_Adapter(getActivity(), model5dayses);
                                 recyclerView2.setAdapter(D_adapter);
+                                recyclerView.setAdapter(H_adapter);
 
-                                add_data_of_5Days_in_database(model5dayses);
+                                main_temp.setText(model5dayses.getList().get(0).getMain().getTemp().intValue() + " ْ ");
+                                //  main_max_min_temp.setText(model5dayses.getList().get(0).getMain().getTempMax()+" ْ "+model5dayses.getList().get(0).getMain().getTempMin()+" ْ ");
+                                main_w_phrase.setText(model5dayses.getList().get(0).getWeather().get(0).getDescription());
+
+
+                                // add_data_of_5Days_in_database(model5dayses);
 
 
                             }
@@ -469,156 +380,93 @@ public class ActivityMain extends AppCompatActivity {
         }
 
 
-        private void add_data_of_5Days_in_database(Model5days response) {
+//        private void add_data_of_5Days_in_database(Model5days response) {
+//
+//            for (int i = 0; i < response.getList().size(); i++) {
+//
+//
+//                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getEpochDate().intValue());
+//                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
+//                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
+//                String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
+//                int weatherIcon = response.getDailyForecasts().get(i).getNight().getIcon();
+//                int icon = select_icon(weatherIcon);
+//                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
+//
+//                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, icon, iconPhrase));
+//
+//            }
+//
+//            // Main Maxtemp , Mintemp ;
+//
+//            String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
+//            String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
+//            main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
+//            Log.e("hh", Max_temp + "//" + Min_temp);
+//
+//        }
 
-            for (int i = 0; i < response.getDailyForecasts().size(); i++) {
-
-
-                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getEpochDate().intValue());
-                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
-                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
-                String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
-                int weatherIcon = response.getDailyForecasts().get(i).getNight().getIcon();
-                int icon = select_icon(weatherIcon);
-                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
-
-                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, icon, iconPhrase));
-
-            }
-
-            // Main Maxtemp , Mintemp ;
-
-            String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
-            String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
-            main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
-            Log.e("hh", Max_temp + "//" + Min_temp);
-
-        }
-
-        public static int select_icon(int weatherIcon) {
+        public static int select_icon(String weatherIcon) {
 
             int Icon;
 
             switch (weatherIcon) {
-                case 1:
-                    Icon = R.drawable.img_1;
+                case "01d":
+                    Icon = R.drawable.d01;
                     break;
-                case 2:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "02d":
+                    Icon = R.drawable.d02;
                     break;
-                case 3:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "03d":
+                    Icon = R.drawable.d03;
                     break;
-                case 4:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "04d":
+                    Icon = R.drawable.d04;
                     break;
-                case 5:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "09d":
+                    Icon = R.drawable.d09;
                     break;
-                case 6:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "10d":
+                    Icon = R.drawable.d10;
                     break;
-                case 7:
-                    Icon = R.drawable.img_7_8_11;
-
+                case "11d":
+                    Icon = R.drawable.d11;
                     break;
-                case 8:
-                    Icon = R.drawable.img_7_8_11;
+                case "13d":
+                    Icon = R.drawable.d13;
                     break;
-                case 11:
-                    Icon = R.drawable.img_7_8_11;
-
+                case "50d":
+                    Icon = R.drawable.d50;
                     break;
-                case 12:
-                    Icon = R.drawable.img_12_15_18;
+                case "01n":
+                    Icon = R.drawable.d01;
                     break;
-                case 13:
-                    Icon = R.drawable.img_13_14_16_17;
+                case "02n":
+                    Icon = R.drawable.d02;
                     break;
-                case 14:
-                    Icon = R.drawable.img_13_14_16_17;
+                case "03n":
+                    Icon = R.drawable.d03;
                     break;
-                case 15:
-                    Icon = R.drawable.img_12_15_18;
+                case "04n":
+                    Icon = R.drawable.d04;
                     break;
-                case 16:
-                    Icon = R.drawable.img_13_14_16_17;
+                case "09n":
+                    Icon = R.drawable.d09;
                     break;
-                case 17:
-                    Icon = R.drawable.img_13_14_16_17;
+                case "10n":
+                    Icon = R.drawable.d10;
                     break;
-                case 18:
-                    Icon = R.drawable.img_12_15_18;
+                case "11n":
+                    Icon = R.drawable.d11;
                     break;
-
-                case 20:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
+                case "13n":
+                    Icon = R.drawable.d13;
                     break;
-                case 21:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
-                    break;
-
-                case 23:
-                    Icon = R.drawable.img_2_3_4_5_6_20_21_23;
-                    break;
-                case 24:
-                    Icon = R.drawable.img_24;
-                    break;
-                case 25:
-                    Icon = R.drawable.img_25_26_29;
-                    break;
-                case 26:
-                    Icon = R.drawable.img_25_26_29;
-                    break;
-                case 29:
-                    Icon = R.drawable.img_25_26_29;
-                    break;
-                case 30:
-                    Icon = R.drawable.img_30;
-
-                    break;
-                case 32:
-                    Icon = R.drawable.img_32;
-
-                    break;
-                case 33:
-                    Icon = R.drawable.img_33;
-                    break;
-                case 34:
-                    Icon = R.drawable.img_34_35_36_37;
-                    break;
-                case 35:
-                    Icon = R.drawable.img_34_35_36_37;
-                    break;
-                case 36:
-                    Icon = R.drawable.img_34_35_36_37;
-                    break;
-                case 37:
-                    Icon = R.drawable.img_34_35_36_37;
-                    break;
-                case 38:
-                    Icon = R.drawable.img_38_44_43;
-                    break;
-                case 39:
-                    Icon = R.drawable.img_39_40_41_42;
-                    break;
-                case 40:
-                    Icon = R.drawable.img_39_40_41_42;
-                    break;
-                case 41:
-                    Icon = R.drawable.img_39_40_41_42;
-                    break;
-                case 42:
-                    Icon = R.drawable.img_39_40_41_42;
-                    break;
-                case 43:
-                    Icon = R.drawable.img_38_44_43;
-                    break;
-                case 44:
-                    Icon = R.drawable.img_38_44_43;
+                case "50n":
+                    Icon = R.drawable.d50;
                     break;
                 default:
-                    Icon = R.drawable.snowy5;
+                    Icon = R.drawable.d01;
                     break;
             }
             return Icon;
