@@ -34,7 +34,7 @@ import static training.weatherapp.Activities.ActivityMain.rootView;
 public class ActivitySettings extends AppCompatActivity {
 
     RadioGroup T_radioGroup, L_radioGroup;
-    RadioButton Rd_auto, Rd_F, Rd_C, Rd_Eng, Rd_Ara;
+    RadioButton Rd_F, Rd_C, Rd_Eng, Rd_It, Rd_Fr, Rd_Tr;
     Button Cancel, Ok;
     Dialog T_dialog, L_dialog;
     TextView Temp_txt_sett, Lang_txt_sett;
@@ -72,25 +72,33 @@ public class ActivitySettings extends AppCompatActivity {
 
         lang = db.settings_Dao().getAll().get(0).getLang();
         language = db.settings_Dao().getAll().get(0).getLanguage();
-        metric = db.settings_Dao().getAll().get(0).getMetric2();
+        metric = db.settings_Dao().getAll().get(0).getMetric1();
 
-        Temp_txt_sett.setText(metric);
 
-        if (language.equals("Arabic")) {
-            Lang_txt_sett.setText(R.string.Arabic);
-        } else {
-            Lang_txt_sett.setText(R.string.English);
+        switch (language) {
+            case "English":
+                Lang_txt_sett.setText(R.string.English);
+                break;
+            case "Italian":
+                Lang_txt_sett.setText(R.string.Italian);
+                break;
+            case "French":
+                Lang_txt_sett.setText(R.string.French);
+                break;
+            case "Turkish":
+                Lang_txt_sett.setText(R.string.Turkish);
+                break;
         }
 
         switch (metric) {
-            case "Auto (F)":
-                Temp_txt_sett.setText(R.string.auto);
+
+            case "metric":
+                Temp_txt_sett.setText(R.string.Celsius);
+
                 break;
-            case " F ":
-                Temp_txt_sett.setText(R.string.F);
-                break;
-            case " C ":
-                Temp_txt_sett.setText(R.string.C);
+            case "imperial":
+                Temp_txt_sett.setText(R.string.Fahrenheit);
+
                 break;
         }
 
@@ -100,7 +108,6 @@ public class ActivitySettings extends AppCompatActivity {
         T_dialog.setCanceledOnTouchOutside(false);
         T_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Rd_auto = T_dialog.findViewById(R.id.rd_auto);
         Rd_F = T_dialog.findViewById(R.id.rd_f);
         Rd_C = T_dialog.findViewById(R.id.rd_c);
         Cancel = T_dialog.findViewById(R.id.cancel);
@@ -118,19 +125,15 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                if (checkedId == R.id.rd_auto) {
-                    Temp_txt_sett.setText(R.string.auto);
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), "Auto (F)", db.settings_Dao().getAll().get(0).isCurrent_location()));
+                if (checkedId == R.id.rd_c) {
+                    Temp_txt_sett.setText(R.string.Celsius);
 
-                } else if (checkedId == R.id.rd_c) {
-                    Temp_txt_sett.setText(R.string.C);
-
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "true", db.settings_Dao().getAll().get(0).getLanguage(), " C ", db.settings_Dao().getAll().get(0).isCurrent_location()));
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "metric", db.settings_Dao().getAll().get(0).getLanguage(), db.settings_Dao().getAll().get(0).isCurrent_location()));
 
 
                 } else if (checkedId == R.id.rd_f) {
-                    Temp_txt_sett.setText(R.string.F);
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "false", db.settings_Dao().getAll().get(0).getLanguage(), " F ", db.settings_Dao().getAll().get(0).isCurrent_location()));
+                    Temp_txt_sett.setText(R.string.Fahrenheit);
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), "imperial", db.settings_Dao().getAll().get(0).getLanguage(), db.settings_Dao().getAll().get(0).isCurrent_location()));
 
                 }
                 T_dialog.dismiss();
@@ -150,7 +153,9 @@ public class ActivitySettings extends AppCompatActivity {
         L_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Rd_Eng = L_dialog.findViewById(R.id.rd_eng);
-        Rd_Ara = L_dialog.findViewById(R.id.rd_ara);
+        Rd_Tr = L_dialog.findViewById(R.id.rd_tr);
+        Rd_It = L_dialog.findViewById(R.id.rd_it);
+        Rd_Fr = L_dialog.findViewById(R.id.rd_fr);
         Ok = L_dialog.findViewById(R.id.ok);
         Ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,17 +164,24 @@ public class ActivitySettings extends AppCompatActivity {
                 if (Rd_Eng.isChecked()) {
                     lang = "en-us";
                     language = "English";
-                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2(), db.settings_Dao().getAll().get(0).isCurrent_location()));
+                    Rd_Eng.setChecked(true);
 
-                    setLocal(lang);
-                    L_dialog.dismiss();
-                } else if (Rd_Ara.isChecked()) {
-                    lang = "ar";
-                    language = "Arabic";
-                    db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).getMetric2(), db.settings_Dao().getAll().get(0).isCurrent_location()));
-                    setLocal(lang);
-                    L_dialog.dismiss();
+                } else if (Rd_Fr.isChecked()) {
+                    lang = "fr";
+                    language = "French";
+                    Rd_Fr.setChecked(true);
+
+                } else if (Rd_It.isChecked()) {
+                    lang = "it";
+                    language = "Italian";
+
+                } else if (Rd_Tr.isChecked()) {
+                    lang = "tr";
+                    language = "Turkish";
                 }
+                db.settings_Dao().update(new Settings_Model(0, lang, db.settings_Dao().getAll().get(0).getMetric1(), language, db.settings_Dao().getAll().get(0).isCurrent_location()));
+                setLocal(lang);
+                L_dialog.dismiss();
             }
         });
 
@@ -181,7 +193,6 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
     private void setLocal(String language) {
-
         Locale myLocale = new Locale(language);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -193,6 +204,7 @@ public class ActivitySettings extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //for arabic version
     private void update_design() {
 
         if (!isRTL(rootView)) {

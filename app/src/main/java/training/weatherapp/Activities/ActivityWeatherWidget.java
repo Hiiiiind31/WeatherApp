@@ -124,7 +124,7 @@ public class ActivityWeatherWidget extends AppCompatActivity {
                             String localizedName = modelOfCurrentLocation.getCountry().getLocalizedName();
 
                             db.cities_Dao().insertAll(new Cities_Model(localizedName, key));
-                            db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), db.settings_Dao().getAll().get(0).getMetric1(), db.settings_Dao().getAll().get(0).getLanguage(), db.settings_Dao().getAll().get(0).getMetric2(), true));
+                            db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), db.settings_Dao().getAll().get(0).getMetric1(), db.settings_Dao().getAll().get(0).getLanguage(), true));
 
                             Log.d("data", "done");
 
@@ -140,7 +140,7 @@ public class ActivityWeatherWidget extends AppCompatActivity {
                     RequestQueue queue = Volley.newRequestQueue(ActivityWeatherWidget.this);
                     queue.add(req);
                 } catch (Exception e) {
-                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), db.settings_Dao().getAll().get(0).getMetric1(), db.settings_Dao().getAll().get(0).getLanguage(), db.settings_Dao().getAll().get(0).getMetric2(), false));
+                    db.settings_Dao().update(new Settings_Model(0, db.settings_Dao().getAll().get(0).getLang(), db.settings_Dao().getAll().get(0).getMetric1(), db.settings_Dao().getAll().get(0).getLanguage(), false));
 
                     Toast.makeText(ActivityWeatherWidget.this, "Error", Toast.LENGTH_LONG).show();
                 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="English">ingilizce</string>
+    <string name="French">Fransızca</string>
+    <string name="Italian">İtalyan</string>
+    <string name="Turkish">Türk</string>
+    <string name="cancel">iptal etmek</string>
+    <string name="language">dil</string>
+    <string name="ok">tamam</string>
+    <string name="city_home">şehir evi</string>
+    <string name="Weather_widget">hava widgeti</string>
+    <string name="Settings">ayarlar</string>
+    <string name="Temperature">sıcaklık</string>
+    <string name="Manage_cities">şehirleri yönet</string>
+    <string name="Fahrenheit">fahrenhayt</string>
+    <string name="Celsius">Selsius</string>
+    <string name="Current_location">mevcut konum</string>
+    <string name="Add_city">şehir ekle</string>
+    <string name="Masoura">Mansoura</string>
+</resources>

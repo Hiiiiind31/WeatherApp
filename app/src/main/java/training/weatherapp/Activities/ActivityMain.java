@@ -2,6 +2,8 @@ package training.weatherapp.Activities;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import training.weatherapp.PrefManager;
 import training.weatherapp.R;
@@ -98,11 +102,12 @@ public class ActivityMain extends AppCompatActivity {
             prefManager.setFirstTimeLaunch(false);
 
             // set default settings
-            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "metric", "English", "C", false));
-            db.cities_Dao().insertAll(new Cities_Model("London ,us", "55489"));
+            db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "metric", "English", false));
+            db.cities_Dao().insertAll(new Cities_Model("London,us", "55489"));
         }
 
-        ///////////////////////
+        setLocal(db.settings_Dao().getAll().get(0).getLang());
+
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -152,6 +157,19 @@ public class ActivityMain extends AppCompatActivity {
         }
         return false;
     }
+
+
+    private void setLocal(String language) {
+        Locale myLocale = new Locale(language);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        conf.setLayoutDirection(myLocale);
+        res.updateConfiguration(conf, dm);
+
+    }
+
 
 
 
@@ -335,7 +353,7 @@ public class ActivityMain extends AppCompatActivity {
                         String lang = db.settings_Dao().getAll().get(0).getLang();
                         String metric = db.settings_Dao().getAll().get(0).getMetric1();
 
-                        String url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&mode=json&appid=fe6f25028b52c2bb6adda4031e39a6c1&units=" + metric;
+                        String url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&mode=json&appid=fe6f25028b52c2bb6adda4031e39a6c1&units=" + metric + "&lang=" + lang;
                         StringRequest req = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

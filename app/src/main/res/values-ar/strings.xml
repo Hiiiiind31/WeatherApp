@@ -10,12 +10,8 @@
     <string name="Settings">الأعدادات</string>
     <string name="Temperature">وحدات الحرارة</string>
     <string name="language">اللغة</string>
-    <string name="auto">الاساسي(فهرنهيت)</string>
-    <string name="C">ْ c</string>
-    <string name="F">ْ F</string>
     <string name="cancel">إلغاء</string>
     <string name="ok">تم</string>
-    <string name="Arabic">عربي</string>
     <string name="English">إنجليزي</string>
     <string name="Current_location">الموقع الحالي</string>
     <string name="city_home">المدينة الأساسية</string>

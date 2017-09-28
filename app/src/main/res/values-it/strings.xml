@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="Add_city">aggiungere città</string>
+    <string name="Current_location">posizione attuale</string>
+    <string name="English">Inglese</string>
+    <string name="French">francese</string>
+    <string name="Italian">italiano</string>
+    <string name="Manage_cities">gestire le città</string>
+    <string name="Settings">impostazioni</string>
+    <string name="Temperature">Temperatura</string>
+    <string name="Turkish">Turco</string>
+    <string name="Weather_widget">widget meteo</string>
+    <string name="cancel">Annulla</string>
+    <string name="city_home">casa della città</string>
+    <string name="language">Lingua</string>
+    <string name="ok">ok</string>
+    <string name="Celsius">centigrado</string>
+    <string name="Fahrenheit">Fahrenheit</string>
+    <string name="Masoura">Mansoura</string>
+</resources>

@@ -30,24 +30,10 @@
         android:checkedButton="@+id/rd_auto">
 
         <RadioButton
-            android:id="@+id/rd_auto"
-            android:layout_width="390dp"
-            android:layout_height="wrap_content"
-            android:text="@string/auto"
-            android:textColor="@android:color/black" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/darker_gray" />
-
-        <RadioButton
             android:id="@+id/rd_c"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/C"
+            android:text="@string/Celsius"
             android:textColor="@android:color/black" />
 
         <View
@@ -61,7 +47,7 @@
             android:id="@+id/rd_f"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/F"
+            android:text="@string/Fahrenheit"
             android:textColor="@android:color/black" />
     </RadioGroup>
 

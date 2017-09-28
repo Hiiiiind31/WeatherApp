@@ -64,7 +64,8 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
         int icon = select_icon(m_items.getList().get(mtimes[position]).getWeather().get(0).getIcon());
         holder.img_weather2.setImageResource(icon);
         holder.tx_time.setText(java_date);
-        holder.tx_temp_mm.setText(m_items.getList().get(mtimes[position]).getMain().getTemp().intValue() + "");
+        String i = String.valueOf(m_items.getList().get(mtimes[position]).getMain().getTemp().intValue() - 3);
+        holder.tx_temp_mm.setText(m_items.getList().get(mtimes[position]).getMain().getTemp().intValue() + " ْ /" + i);
         // holder.tx_temp_mm.setText(m_items.getList().get(position).getMain().getTempMax()+" ْ"+"/"+m_items.getList().get(position).getMain().getTempMin()+" ْ");
 
         // }
