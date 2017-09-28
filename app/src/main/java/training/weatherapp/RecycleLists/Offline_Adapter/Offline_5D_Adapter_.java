@@ -19,6 +19,8 @@ import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
 
+import static training.weatherapp.Activities.ActivityMain.PlaceholderFragment.select_icon;
+
 
 /**
  * Created by hindahmed on 12/09/17.
@@ -53,9 +55,9 @@ public class Offline_5D_Adapter_ extends RecyclerView.Adapter<Offline_5D_Adapter
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
 
-//        int icon = select_icon(m_items.get(position).getD_Image());
-//
-//        holder.img_weather2.setImageResource(icon);
+        int icon = select_icon(String.valueOf(m_items.get(position).getD_Image()));
+
+        holder.img_weather2.setImageResource(icon);
         holder.tx_time.setText(java_date);
         holder.tx_temp_mm.setText(m_items.get(position).getD_Max_Temp() + " ْ " + "/" + m_items.get(position).getD_Min_Temp() + " ْ ");
 

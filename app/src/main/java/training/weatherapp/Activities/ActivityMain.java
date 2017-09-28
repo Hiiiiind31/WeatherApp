@@ -42,7 +42,9 @@ import training.weatherapp.PrefManager;
 import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.D_Adapter;
 import training.weatherapp.RecycleLists.Adapters.H_Adapter;
+import training.weatherapp.RecycleLists.Offline_Adapter.Offline_12H_Adapter;
 import training.weatherapp.RecycleLists.Offline_Adapter.Offline_5D_Adapter_;
+import training.weatherapp.RecycleLists.offline_Models.Offline_Model_12Hours;
 import training.weatherapp.RecycleLists.offline_Models.Offline_model_5Days;
 import training.weatherapp.RoomDatabase.AppDatabase;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
@@ -107,6 +109,7 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         setLocal(db.settings_Dao().getAll().get(0).getLang());
+
 
 
 
@@ -268,6 +271,7 @@ public class ActivityMain extends AppCompatActivity {
             main_max_min_temp = rootView.findViewById(R.id.main_max_min_temp);
             main_w_phrase = rootView.findViewById(R.id.main_w_phrase);
 
+
             // set up the Days RecyclerListView
             recyclerView = rootView.findViewById(R.id.Recycle_ViewList_hours);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -292,13 +296,13 @@ public class ActivityMain extends AppCompatActivity {
         private void Get_offline_data_of_5_days_from_db() {
 
 
-            String Max_temp, Min_temp, Date;
+            String Max_temp, Min_temp, Date, temp, description;
+
             int Icon;
             ArrayList<Offline_model_5Days> offlineModel5Dayses = new ArrayList<>();
 
-
-            for (int i = 0; i < 4; i++) {
-
+            //data of days
+            for (int i = 0; i < 5; i++) {
 
                 Min_temp = db.WDays_Dao().getAll().get(i).getMin_temp();
                 Max_temp = db.WDays_Dao().getAll().get(i).getMax_temp();
@@ -307,10 +311,34 @@ public class ActivityMain extends AppCompatActivity {
                 Offline_model_5Days offline_model_5Days = new Offline_model_5Days(Date, Icon, Max_temp, Min_temp);
 
                 offlineModel5Dayses.add(offline_model_5Days);
-
             }
+            Log.d("data", offlineModel5Dayses.get(0).getD_Max_Temp() + "");
             Offline_5D_Adapter_ offline_5D_adapter_ = new Offline_5D_Adapter_(getContext(), offlineModel5Dayses);
             recyclerView2.setAdapter(offline_5D_adapter_);
+
+            //data of hours
+
+            ArrayList<Offline_Model_12Hours> offlineModel12Hour = new ArrayList<>();
+
+            for (int i = 0; i < 8; i++) {
+
+                temp = db.WHours_Doa().getAll().get(i).getTemp();
+                description = db.WHours_Doa().getAll().get(i).getIconPhrase();
+                Date = db.WHours_Doa().getAll().get(i).getDate();
+                Icon = db.WHours_Doa().getAll().get(i).getIcon();
+                Offline_Model_12Hours offline_Model_12Hour = new Offline_Model_12Hours(Date, Icon, temp, description);
+
+                offlineModel12Hour.add(offline_Model_12Hour);
+            }
+            Offline_12H_Adapter offline_12H_adapter_ = new Offline_12H_Adapter(getContext(), offlineModel12Hour);
+            recyclerView.setAdapter(offline_12H_adapter_);
+
+
+            main_temp.setText(db.WHours_Doa().getAll().get(0).getTemp() + " ْ ");
+            //  main_max_min_temp.setText(model5dayses.getList().get(0).getMain().getTempMax()+" ْ "+model5dayses.getList().get(0).getMain().getTempMin()+" ْ ");
+            main_w_phrase.setText(db.WHours_Doa().getAll().get(0).getIconPhrase());
+
+
 
         }
 
@@ -375,7 +403,7 @@ public class ActivityMain extends AppCompatActivity {
                                 main_w_phrase.setText(model5dayses.getList().get(0).getWeather().get(0).getDescription());
 
 
-                                // add_data_of_5Days_in_database(model5dayses);
+                                add_data_of_5Days_in_database(model5dayses, mtimes);
 
 
                             }
@@ -398,31 +426,53 @@ public class ActivityMain extends AppCompatActivity {
         }
 
 
-//        private void add_data_of_5Days_in_database(Model5days response) {
-//
-//            for (int i = 0; i < response.getList().size(); i++) {
-//
-//
-//                String epochDateTime = String.valueOf(response.getDailyForecasts().get(i).getEpochDate().intValue());
+        private void add_data_of_5Days_in_database(Model5days response, int[] mtimes) {
+
+            for (int i = 0; i < mtimes.length; i++) {
+
+                int pos = mtimes[i];
+
+                Log.d("po", pos + "");
+                // add 5 days data
+
+                String epochDateTime = String.valueOf(response.getList().get(pos).getDt().intValue());
+                //String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
+                //String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
+                String temp = String.valueOf(response.getList().get(pos).getMain().getTemp().intValue());
+                String temp2 = String.valueOf(response.getList().get(pos).getMain().getTemp().intValue() - 3);
+                String iconPhrase = response.getList().get(pos).getWeather().get(0).getDescription();
+                String weatherIcon = response.getList().get(pos).getWeather().get(0).getIcon();
+                int icon = select_icon(weatherIcon);
+                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
+                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, temp, temp2, icon, iconPhrase));
+
+
+            }
+
+            for (int i = 0; i < 8; i++) {
+
+                // add 12hours data
+
+                String epochDateTime = String.valueOf(response.getList().get(i).getDt().intValue());
 //                String Max_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMaximum().getValue().intValue());
 //                String Min_value = String.valueOf(response.getDailyForecasts().get(i).getTemperature().getMinimum().getValue().intValue());
-//                String iconPhrase = response.getDailyForecasts().get(i).getNight().getIconPhrase();
-//                int weatherIcon = response.getDailyForecasts().get(i).getNight().getIcon();
-//                int icon = select_icon(weatherIcon);
-//                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
-//
-//                db.WDays_Dao().insertAll(new Weather_days_model(city_keys, epochDateTime, Max_value, Min_value, icon, iconPhrase));
-//
-//            }
-//
-//            // Main Maxtemp , Mintemp ;
-//
-//            String Max_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().intValue());
-//            String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
-//            main_max_min_temp.setText(Max_temp + " ْ /" + Min_temp + " ْ ");
-//            Log.e("hh", Max_temp + "//" + Min_temp);
-//
-//        }
+                String temp = String.valueOf(response.getList().get(i).getMain().getTemp().intValue());
+                String iconPhrase = response.getList().get(i).getWeather().get(0).getDescription();
+                String weatherIcon = response.getList().get(i).getWeather().get(0).getIcon();
+                int icon = select_icon(weatherIcon);
+                String city_keys = db.cities_Dao().getAll().get(getArguments().getInt(ARG_SECTION_NUMBER) - 1).getCities_keys();
+                db.WHours_Doa().insertAll(new Weather_hours_model(city_keys, epochDateTime, temp, icon, iconPhrase));
+
+            }
+
+            // Main Maxtemp , Mintemp ;
+
+            //String Max_temp = String.valueOf(response.getList().get(0).getMain().getTemp().intValue());
+            // String Min_temp = String.valueOf(response.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().intValue());
+            // main_max_min_temp.setText(Max_temp + " ْ /");
+
+
+        }
 
         public static int select_icon(String weatherIcon) {
 
