@@ -1,7 +1,10 @@
 package training.weatherapp.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,7 @@ import training.weatherapp.R;
 import training.weatherapp.RecycleLists.Adapters.cities_Adapter;
 import training.weatherapp.Volley.Model_Cities.ModelCity;
 
+import static training.weatherapp.Activities.ActivityMain.isInternet;
 import static training.weatherapp.Activities.ActivityMain.rootView;
 import static training.weatherapp.Activities.ActivitySettings.isRTL;
 
@@ -46,18 +50,18 @@ public class ActivityAddCity extends AppCompatActivity {
         if (!isRTL(rootView)) {
             icon5.setRotation(180);
             add_city_layout.setRotation(360);
-
         }
 
+        if (!isInternet) {
+            no_connection_dialog();
+        }
     }
 
     public void clear_text(View v) {
         search_city.setText("");
-
     }
 
     public void get_city(View V) {
-
 
         if (!search_city.getText().toString().isEmpty()) {
 
@@ -86,15 +90,34 @@ public class ActivityAddCity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(req);
-
         }
+    }
 
+    public void no_connection_dialog() {
 
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setIcon(R.drawable.ic_add_black_24dp);
+        dialog.setMessage(R.string.no_connection);
+        dialog.setTitle(R.string.error);
+        dialog.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(ActivityAddCity.this, ActivityCities.class);
+                startActivity(intent);
+            }
+        });
+        dialog.setPositiveButton(R.string.Settings, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        dialog.show();
     }
 
     public void back_img_click(View v) {
         Intent i = new Intent(ActivityAddCity.this, ActivityCities.class);
         startActivity(i);
     }
-
 }

@@ -19,5 +19,7 @@
     <string name="English">English</string>
     <string name="Current_location">Current Location</string>
     <string name="city_home">Home City</string>
+    <string name="no_connection">No Internet connection </string>
+    <string name="error">Error</string>
 
 </resources>

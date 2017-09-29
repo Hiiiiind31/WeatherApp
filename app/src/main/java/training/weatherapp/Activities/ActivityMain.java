@@ -128,11 +128,7 @@ public class ActivityMain extends AppCompatActivity {
         /////////////////////////////////////////////////////////
 
 
-        if (isInternetOn()) {
-            isInternet = true;
-        } else {
-            isInternet = false;
-        }
+        isInternet = isInternetOn();
 
 
     }
