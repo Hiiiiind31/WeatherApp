@@ -31,14 +31,16 @@ public class ActivityCities extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(myToolbar);
 
         icon4 = (ImageView) findViewById(R.id.icon4);
+
         mag_layout = (LinearLayout) findViewById(R.id.Man_layout);
 
         cities_listview = (RecyclerView) findViewById(R.id.cities_listview);
         cities_listview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         List<Cities_Model> all = db.cities_Dao().getAll();
         Cities_View_Adapter cities_adapter = new Cities_View_Adapter(this,all);
         if(!db.cities_Dao().getAll().isEmpty()){

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class D_Adapter extends RecyclerView.Adapter<D_Adapter.ViewHolder> {
         SimpleDateFormat jdf = new SimpleDateFormat("EE, MMM d");
         jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
         String java_date = jdf.format(date);
+
 
         int icon = select_icon(m_items.getList().get(mtimes[position]).getWeather().get(0).getIcon());
         holder.img_weather2.setImageResource(icon);

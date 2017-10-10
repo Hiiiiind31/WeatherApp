@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +91,10 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
+
 
         queue = Volley.newRequestQueue(this);
 
@@ -105,12 +109,10 @@ public class ActivityMain extends AppCompatActivity {
 
             // set default settings
             db.settings_Dao().insertAll(new Settings_Model(0, "en-us", "metric", "English", false));
-            db.cities_Dao().insertAll(new Cities_Model("London,us", "55489"));
+            db.cities_Dao().insertAll(new Cities_Model("Cairo,eg", "55489"));
         }
 
         setLocal(db.settings_Dao().getAll().get(0).getLang());
-
-
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -170,9 +172,6 @@ public class ActivityMain extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -212,36 +211,41 @@ public class ActivityMain extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
+            if (isInternet) {
+                rootView = inflater.inflate(R.layout.fragment_tab, container, false);
 
-            rootView = inflater.inflate(R.layout.fragment_tab, container, false);
+                dotsLayout = rootView.findViewById(R.id.layoutDots);
+                addBottomDots(getArguments().getInt(ARG_SECTION_NUMBER) - 1);
 
-            dotsLayout = rootView.findViewById(R.id.layoutDots);
-            addBottomDots(getArguments().getInt(ARG_SECTION_NUMBER) - 1);
+                Tool_bar(rootView);
+                Recycle_design(rootView);
 
-            Tool_bar(rootView);
-            Recycle_design(rootView);
 
-            TextView City_Name = rootView.findViewById(R.id.city_name);
-            City_Name.setText(getArguments().getString(ARG_page_content));
-            ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+                TextView City_Name = rootView.findViewById(R.id.city_name);
+                City_Name.setText(getArguments().getString(ARG_page_content));
+                ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    addBottomDots(position);
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                        addBottomDots(position);
 
-                }
+                    }
 
-                @Override
-                public void onPageSelected(int position) {
-                    addBottomDots(position);
-                }
+                    @Override
+                    public void onPageSelected(int position) {
+                        addBottomDots(position);
+                    }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
 
-                }
-            };
+                    }
+                };
+            } else {
 
+                rootView = inflater.inflate(R.layout.no_internet_layout, container, false);
+
+            }
             return rootView;
         }
 
@@ -282,7 +286,8 @@ public class ActivityMain extends AppCompatActivity {
 
             } else {
 
-                Get_offline_data_of_5_days_from_db();
+
+                //  Get_offline_data_of_5_days_from_db();
 
 
             }
@@ -335,7 +340,6 @@ public class ActivityMain extends AppCompatActivity {
             main_w_phrase.setText(db.WHours_Doa().getAll().get(0).getIconPhrase());
 
 
-
         }
 
 
@@ -363,7 +367,6 @@ public class ActivityMain extends AppCompatActivity {
             ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
 
         }
-
 
 
         private void Get_data_of_5_days(final Cities_Model cities_model) {
