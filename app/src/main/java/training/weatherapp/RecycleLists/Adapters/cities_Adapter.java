@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 
 import training.weatherapp.Activities.ActivityAddCity;
 import training.weatherapp.Activities.ActivityCities;
+import training.weatherapp.Activities.ActivityMain;
 import training.weatherapp.R;
 import training.weatherapp.RoomDatabase.Models.Cities_Model;
 import training.weatherapp.Volley.Model_Cities.ModelCity;
@@ -71,7 +72,7 @@ public class cities_Adapter extends RecyclerView.Adapter<cities_Adapter.ViewHold
                 @Override
                 public void onClick(View view) {
                     adapterPosition = getAdapterPosition();
-                    Toast.makeText(view.getContext(), m_items[adapterPosition].getKey(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(view.getContext(), m_items[adapterPosition].getKey(), Toast.LENGTH_LONG).show();
                     add_city_to_data_base();
 
                 }
@@ -86,7 +87,8 @@ public class cities_Adapter extends RecyclerView.Adapter<cities_Adapter.ViewHold
             String city_name = m_items[adapterPosition].getLocalizedName();
             String city_key = m_items[adapterPosition].getKey();
             db.cities_Dao().insertAll(new Cities_Model(city_name, city_key));
-            Intent i = new Intent(context, ActivityCities.class);
+            Intent i = new Intent(context, ActivityMain.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
 

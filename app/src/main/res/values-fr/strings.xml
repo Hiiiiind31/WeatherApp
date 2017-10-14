@@ -18,4 +18,6 @@
     <string name="Current_location">Localisation actuelle</string>
     <string name="Masoura">Mansoura</string>
     <string name="Add_city">ajouter une ville</string>
+    <string name="error">Erreur</string>
+    <string name="no_connection">Pas de connexion Internet</string>
 </resources>

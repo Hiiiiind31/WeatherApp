@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/Main_linear_temp"
                 android:layout_marginTop="10dp"
-                android:text="Updated 30 minutes ago"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textSize="10sp" />
 

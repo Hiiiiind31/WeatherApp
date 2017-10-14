@@ -18,4 +18,6 @@
     <string name="Celsius">centigrado</string>
     <string name="Fahrenheit">Fahrenheit</string>
     <string name="Masoura">Mansoura</string>
+    <string name="error">Errore</string>
+    <string name="no_connection">Nessuna connessione Internet</string>
 </resources>

@@ -92,9 +92,7 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
-
 
         queue = Volley.newRequestQueue(this);
 
@@ -112,8 +110,8 @@ public class ActivityMain extends AppCompatActivity {
             db.cities_Dao().insertAll(new Cities_Model("Cairo,eg", "55489"));
         }
 
-        setLocal(db.settings_Dao().getAll().get(0).getLang());
 
+        setLocal(db.settings_Dao().getAll().get(0).getLang());
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

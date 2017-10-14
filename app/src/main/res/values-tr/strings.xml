@@ -18,4 +18,6 @@
     <string name="Current_location">mevcut konum</string>
     <string name="Add_city">şehir ekle</string>
     <string name="Masoura">Mansoura</string>
+    <string name="error">Hata</string>
+    <string name="no_connection">İnternet bağlantısı yok</string>
 </resources>
